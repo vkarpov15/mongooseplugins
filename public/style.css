@@ -1,0 +1,42 @@
+body {
+  font: 13px "Helvetica Neue", Arial, sans-serif;
+  color: #111;
+  padding: 60px 80px;
+}
+
+#term {
+  font-size: 20px;
+  line-height: 18px;
+  width: 260px;
+  margin-right: 5px;
+}
+
+#search {
+  font-size: 20px;
+}
+
+#litemplate {
+  display: none;
+}
+
+#result {
+  padding-left: 0;
+  margin-top: 45px;
+}
+#result li {
+  list-style: none;
+  padding: 20px;
+}
+#result li:nth-child(odd) {
+  background-color: #fcfcfc;
+}
+#result a {
+  display: block;
+  color: #800;
+}
+
+@media only screen and (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+}
