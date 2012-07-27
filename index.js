@@ -14,9 +14,10 @@ require('./settings')(app);
 require('./routes')(app);
 
 // go!
-app.listen(7999, function () {
+var port = process.env.PORT || 7999;
+app.listen(port, function () {
   console.error('plugins.mongoosejs.com now listening on http://%s:%s', 'localhost',
-    7999);
+   port);
 });
 
 
