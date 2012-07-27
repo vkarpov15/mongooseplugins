@@ -2,7 +2,7 @@
   "author": "Aaron Heckmann <aaron.heckmann+github@gmail.com>",
   "name": "plugins.mongoosejs.com",
   "description": "Mongoosejs plugins site",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "url": ""
   },
@@ -14,6 +14,6 @@
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": "0.8.4"
   }
 }
