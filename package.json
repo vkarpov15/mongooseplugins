@@ -10,6 +10,7 @@
       "npm": "1.1.18"
     , "express": "3.0"
     , "request": "2.9.203"
+    , "jade": "0.27.0"
   },
   "devDependencies": {},
   "optionalDependencies": {},
