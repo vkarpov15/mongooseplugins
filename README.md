@@ -1,3 +1,3 @@
-#plugins.mongoosejs.com
+##http://mongooseplugins.herokuapp.com/
 ========================
 
