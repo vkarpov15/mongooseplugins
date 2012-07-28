@@ -69,3 +69,5 @@ $('form').on('submit', function (e) {
 
   return false
 })
+
+term.focus();
