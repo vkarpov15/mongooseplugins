@@ -2,7 +2,11 @@
 extends layout
 
 block content
-  h1 plugins search
+  #header
+    h1
+      a(href="https://github.com/learnboost/mongoose")
+        .mongoose Mongoose
+  h2 plugins search
   form(action='/search')
     input#term(name='term')
     button#search(type='submit') Search
