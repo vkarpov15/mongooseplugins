@@ -1,4 +1,4 @@
-window.debug = true
+window.debug = false;
 
 var term = $('#term')
 var result = $('#result')
