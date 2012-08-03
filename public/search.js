@@ -14,6 +14,17 @@ function success (data) {
   $.each(data, function (index, item) {
     result.append(elem(item))
   })
+
+  var plural = 1 === data.length
+    ? ''
+    : 's';
+
+  result.append(
+      '<li>'
+    + data.length
+    + ' result'
+    + plural
+    + '</li>');
 }
 
 function error () {
