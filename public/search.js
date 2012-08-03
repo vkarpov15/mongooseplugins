@@ -7,7 +7,7 @@ function success (data) {
   debug && console.log(data)
 
   if (!(data && data.length)) {
-    return result.html("<li>no results found<li>")
+    return result.html("<li>no results found</li>")
   }
 
   result.empty();
