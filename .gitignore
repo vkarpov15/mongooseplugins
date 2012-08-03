@@ -2,3 +2,4 @@
 *.swp
 *.swn
 node_modules/
+lib/npmcache.json
