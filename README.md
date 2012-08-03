@@ -1,3 +1,3 @@
-###http://mongooseplugins.herokuapp.com/
+###http://plugins.mongoosejs.com/
 
 source code
