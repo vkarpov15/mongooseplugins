@@ -41,7 +41,7 @@ module.exports = exports = function (app) {
     request(repo, function (err, response, body) {
       if (err) return next(err);
 
-      var watchers = /\/watchers">([0-9,]+)</.exec(body);
+      var watchers = /\/stargazers">([0-9,]+)</.exec(body);
 
       // bad response or github changed their markup
       if (!(watchers && watchers.length))
