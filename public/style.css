@@ -31,8 +31,8 @@ h3 {
   text-indent: -7px;
   color: #fff;
   text-shadow: 47px 5px 4px transparent, -6px 0 9px transparent;
-  -webkit-transition: text-shadow 2s ease-in-out;
-  -moz-transition: text-shadow 2s ease-in-out;
+  /*-webkit-transition: text-shadow 2s ease-in-out;*/
+  /*-moz-transition: text-shadow 2s ease-in-out;*/
 }
 
 .load .mongoose {
