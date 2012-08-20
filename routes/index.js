@@ -57,7 +57,6 @@ module.exports = exports = function (app) {
     });
   })
 
-
   return app;
 
 }
