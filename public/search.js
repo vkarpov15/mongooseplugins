@@ -71,12 +71,15 @@ function watchers (repo, li) {
 
 // repo search
 $('form').on('submit', function (e) {
+  var val = term.val();
   $.ajax({
-      url: '/search/' + term.val()
+      url: '/search/' + val
     , dataType: 'json'
     , success: success
     , error: error
   })
+
+  _gaq.push(['_trackEvent', 'search', val])
 
   return false
 })
