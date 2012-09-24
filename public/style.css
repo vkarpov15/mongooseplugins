@@ -2,12 +2,14 @@ body {
   font-family: 'Open Sans', Helvetica, Arial, FreeSans;
   color: #333;
   padding: 5px 50px;
-  background: #d8e2d8 url(/square_bg.png);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }
 
-#wrap { width: 600px; }
+#wrap {
+  width: 600px;
+  margin: 0 auto;
+}
 
 h1 a {
   text-decoration: none;
@@ -29,14 +31,6 @@ h3 {
   font-size: 146px;
   font-weight: 100;
   text-indent: -7px;
-  color: #fff;
-  text-shadow: 47px 5px 4px transparent, -6px 0 9px transparent;
-  /*-webkit-transition: text-shadow 2s ease-in-out;*/
-  /*-moz-transition: text-shadow 2s ease-in-out;*/
-}
-
-.load .mongoose {
-  text-shadow: 18px 5px 6px #777, -6px 0px 2px #fff;
   letter-spacing: -14px;
 }
 
