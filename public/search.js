@@ -78,7 +78,9 @@ $('form').on('submit', function (e) {
     , error: error
   })
 
-  _gaq.push(['_trackEvent', 'search', val])
+  if (/mongoosejs\.com/.test(location.host)) {
+    _gaq.push(['_trackEvent', 'search', val])
+  }
 
   return false
 })
