@@ -63,7 +63,6 @@ function elem (item) {
 
 // repo watchers
 function watchers (repo, li) {
-
   $.get('/watchers/' + encodeURIComponent(repo), function (data) {
     li.append("<p class='watchers'>stars: " + data + "</p>");
   });
@@ -84,4 +83,8 @@ $('form').on('submit', function (e) {
   return false
 })
 
-term.focus();
+if (term.val().length) {
+  $('form').trigger('submit');
+} else {
+  term.focus();
+}

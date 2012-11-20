@@ -8,7 +8,8 @@ search.on('error', function (err) {
 module.exports = exports = function (app) {
 
   app.get('/', function (req, res) {
-    res.render('index');
+    var term = req.query.q || '';
+    res.render('index', { term: term });
   });
 
   app.head('/search/:term?', function (req, res) {
