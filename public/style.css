@@ -86,6 +86,13 @@ a, a:visited {
 .watchers { 
   /*background: transparent url(/eye.png) no-repeat;*/
 }
+.time, .watchers strong {
+  font-size: 16px;
+  font-weight: normal;
+}
+.watchers strong {
+  text-shadow: 1px 1px 20px #bebeb7;
+}
 
 @media only screen and (max-width: 480px) {
   body {

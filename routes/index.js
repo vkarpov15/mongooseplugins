@@ -42,19 +42,21 @@ module.exports = exports = function (app) {
     request(repo, function (err, response, body) {
       if (err) return next(err);
 
-      var watchers = /\/stargazers">([0-9,]+)</.exec(body);
+      var watchers = /\/stargazers">([0-9,\s]+)</mg.exec(body);
 
       // bad response or github changed their markup
       if (!(watchers && watchers.length))
         return res.send(404)
 
+      var stars = watchers[1] && String(watchers[1]).trim();
+
       if (search.cache) {
         // cache it for later
         search.cache.__repo__ || (search.cache.__repo__ = {});
-        search.cache.__repo__[repo] = watchers[1];
+        search.cache.__repo__[repo] = stars;
       }
 
-      res.end(watchers[1]);
+      res.end(stars);
     });
   })
 

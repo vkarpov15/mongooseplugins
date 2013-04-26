@@ -64,7 +64,7 @@ function elem (item) {
 // repo watchers
 function watchers (repo, li) {
   $.get('/watchers/' + encodeURIComponent(repo), function (data) {
-    li.append("<p class='watchers'>stars: " + data + "</p>");
+    li.append("<p class='watchers'><strong>"+data+"</strong>Github Stars</p>");
   });
 }
 
