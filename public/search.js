@@ -49,6 +49,8 @@ function elem (item) {
       elem.text(item[prop])
       if (url[prop]) {
         elem.attr('href', item[prop])
+      } else if ('name' == prop) {
+        elem.attr('href', 'https://npmjs.org/package/' + item[prop]);
       }
     } else {
       elem.remove()

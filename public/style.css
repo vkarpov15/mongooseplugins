@@ -26,6 +26,9 @@ h3 {
   font-size: 25px;
   margin-top: 3px;
 }
+h3 a {
+  text-decoration: none;
+}
 
 .mongoose {
   font-size: 146px;
@@ -92,6 +95,7 @@ a, a:visited {
 }
 .watchers strong {
   text-shadow: 1px 1px 20px #bebeb7;
+  padding-right: 5px;
 }
 
 @media only screen and (max-width: 480px) {
