@@ -15,7 +15,7 @@
     "github-url-from-git": "1.1.1"
   },
   "devDependencies": {
-    "switchblade": "https://github.com/vkarpov15/switchblade/archive/master.tar.gz"
+    "switchblade": "0.0.1"
   },
   "optionalDependencies": {},
   "engines": {
