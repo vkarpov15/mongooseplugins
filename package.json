@@ -7,15 +7,21 @@
     "url": ""
   },
   "dependencies": {
-      "npm": "1.4.9"
-    , "express": "3.0"
-    , "request": "2.9.203"
-    , "jade": "0.27.0"
-    , "github-url-from-git": "1.1.1"
+    "npm": "1.4.9",
+    "express": "3.0",
+    "forever": "0.15.1",
+    "request": "2.9.203",
+    "jade": "0.27.0",
+    "github-url-from-git": "1.1.1"
   },
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {
     "node": "0.10.28"
+  },
+  "scripts": {
+    "start": "node .",
+    "start-prod": "env PORT=80 forever start --append --uid plugins index.js",
+    "stop-prod": "forever stop plugins"
   }
 }
