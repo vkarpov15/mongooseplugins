@@ -35,7 +35,7 @@ function error () {
  * Return an element representation of `item`.
  */
 
-var props = 'name url description github time'.split(' ')
+var props = 'name url description github date'.split(' ')
 var url = { url: 1, github: 1 }
 var li = $('#litemplate').html()
 

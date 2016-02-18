@@ -1,9 +1,6 @@
-var request = require('request')
+var request = require('request');
 
-var search = require('../lib/search')
-search.on('error', function (err) {
-  console.error('npm search error', err);
-});
+var search = require('../lib/search');
 
 module.exports = exports = function (app) {
 
@@ -32,12 +29,6 @@ module.exports = exports = function (app) {
   app.get('/watchers/:repo', function (req, res, next) {
     var repo = req.params.repo;
 
-    // cached?
-    if (search.cache && search.cache.__repo__ && search.cache.__repo__[repo]) {
-      console.log('watchers cache hit: %s', repo);
-      return res.end(search.cache.__repo__[repo]);
-    }
-
     console.log('watchers lookup: %s', repo);
     request(repo, function (err, response, body) {
       if (err) return next(err);
@@ -63,4 +54,3 @@ module.exports = exports = function (app) {
   return app;
 
 }
-
