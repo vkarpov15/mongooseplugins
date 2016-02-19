@@ -6,13 +6,25 @@
   "repository": {
     "url": ""
   },
+  "main": "src/index.js",
   "dependencies": {
-    "npm": "1.4.9",
-    "express": "3.0",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "cradle": "^0.7.1",
+    "error-handler": "^1.0.0",
+    "express": "4.13",
+    "express-session": "^1.13.0",
     "forever": "0.15.1",
-    "request": "2.9.203",
-    "jade": "0.27.0",
-    "github-url-from-git": "1.1.1"
+    "github-url-from-git": "1.4.0",
+    "jade": "1.11.0",
+    "memcache": "^0.3.0",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "node-couchdb": "^0.4.0",
+    "npm": "3.7.2",
+    "redis": "^2.4.2",
+    "request": "2.69.0",
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "switchblade": "0.0.1"
@@ -24,7 +36,6 @@
   "scripts": {
     "deploy": "switchblade -s start-prod -t stop-prod -h plugins.mongoosejs.io ./*.js ./lib/* ./routes/* ./views/* ./public/* ./package.json",
     "start": "node .",
-    "start-prod": "env PORT=80 forever start --append --uid plugins index.js",
-    "stop-prod": "forever stop plugins"
+    "stop-prod": "./node_modules/.bin/forever stop plugins"
   }
 }

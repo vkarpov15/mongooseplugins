@@ -1,0 +1,16 @@
+web:
+  build: .
+  volumes:
+    - "./src:/var/app/current/src"
+  ports:
+    - "80:7999"
+  links:
+    - "redis:redis"
+    - "couchdb:couchdb"
+
+redis:
+  image: redis
+couchdb:
+  image: klaemo/couchdb:latest
+  # volumes: 
+  #   - "/couchdb:/usr/local/var/lib/couchdb"
