@@ -1,0 +1,3 @@
+#!/bin/bash
+cd $APP_DIR
+$APP_DIR/node_modules/.bin/forever --append --uid plugins $APP_DIR/src/index.js

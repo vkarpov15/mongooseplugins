@@ -1,0 +1,7 @@
+.git
+.gitignore
+*.md
+Makefile
+Procfile
+node_modules
+test
