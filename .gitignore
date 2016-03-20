@@ -3,3 +3,6 @@
 *.swn
 node_modules/
 lib/npmcache.json
+
+data
+logs
