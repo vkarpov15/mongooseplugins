@@ -1,23 +1,8 @@
-// plugins.mongoosejs.com
-
-var http = require('http')
-  , express = require('express')
-  , app = express()
-
-// configure
-require('./configure')(app);
-
-// settings
-require('./settings')(app);
-
-// routes
-require('./routes')(app);
-
-// go!
-var port = process.env.PORT || 7999;
-app.listen(port, function () {
-  console.error('plugins.mongoosejs.com now listening on http://%s:%s', 'localhost',
-   port);
-});
-
-
+require('./lib/server')(3000, 'mongodb://localhost:27017/plugins', console.log).
+  then(() => {
+    console.log('Listening on 3000');
+  }).
+  catch(error => {
+    console.error(error.stack);
+    process.exit(1);
+  });
