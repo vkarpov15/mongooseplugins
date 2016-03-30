@@ -1,3 +1,3 @@
-###http://plugins.mongoosejs.com/
+###http://plugins.mongoosejs.io/
 
 source code
