@@ -13,6 +13,7 @@
     "jade": "0.27.0",
     "JSONStream": "1.1.1",
     "github-url-from-git": "1.1.1",
+    "mkdirp": "0.5.1",
     "mongodb": "2.1.9",
     "mongodb-version-manager": "1.0.2",
     "mongodb-topology-manager": "1.0.6",
@@ -27,11 +28,9 @@
   },
   "scripts": {
     "deploy": "switchblade -s start-prod -t stop-prod -h plugins.mongoosejs.io ./*.js ./lib/* ./routes/* ./views/* ./public/* ./package.json",
-    "mongodb": "mkdir -p ./data && mkdir -p ./logs && (`m path`/mongod --fork --logpath ./logs/mongodb.log --dbpath ./data || cat ./logs/mongodb.log)",
-    "mongodb-stop": "pkill mongod",
     "postinstall": "m use 3.2.3",
-    "start": "npm run mongodb && node .",
-    "start-prod": "npm run mongodb && env PORT=80 forever start --append --uid plugins index.js",
-    "stop-prod": "npm run mongodb-stop && forever stop plugins"
+    "start": "node .",
+    "start-prod": "env PORT=80 forever start --append --uid plugins index.js",
+    "stop-prod": "forever stop plugins"
   }
 }

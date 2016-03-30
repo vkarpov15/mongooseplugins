@@ -4,5 +4,7 @@
 node_modules/
 lib/npmcache.json
 
+npm-debug.log
+
 data
 logs
