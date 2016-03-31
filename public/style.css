@@ -13,10 +13,15 @@ body {
 
 h1 a {
   text-decoration: none;
+  font-weight: 100;
+  font-size: 146px;
+  font-family: 'Helvetica Nueue', Helvetica, Arial, FreeSans, sans-serif;
+  text-rendering: geometricPrecision;
 }
 
 h2 {
   font-size: 25px;
+  font-weight: 100;
   margin-top: -42px;
   margin-bottom: 65px;
   color: #818181;
@@ -37,16 +42,33 @@ h3 a {
   letter-spacing: -14px;
 }
 
+form {
+  text-align: center;
+}
+
 #term {
   font-size: 34px;
   line-height: 35px;
   width: 100%;
   color: #414141;
+  margin-bottom: 8px;
 }
 
 #search {
-  font-size: 35px;
+  text-align: center
   color: #414141;
+  background: #444;
+  padding: 9px 0px;
+  font-size: 18px;
+  font-weight: 100;
+  border-radius: 3px;
+  weight: light;
+  color: white;
+  width: 180px;
+  border: 0;
+  text-decoration: none;
+  text-transform: lowercase;
+  text-shadow: 1px 1px 7px #222;
 }
 
 #litemplate {
@@ -64,7 +86,7 @@ h3 a {
   background: #FDFDFD;
   border-top: 3px solid #fff;
   border-bottom: 1px solid #EEE;
-  box-shadow: 3px 3px 13px #888;
+  box-shadow: 0px 2px 3px #888;
   margin-bottom: 25px;
 }
 #result a {
@@ -110,7 +132,7 @@ a, a:visited {
   }
   h2 {
     font-size: 15px;
-    margin: -33px 0 35px 77px;
+    margin: -24px 0 35px 77px;
   }
   #wrap {
     width: 100%;
