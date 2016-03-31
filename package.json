@@ -2,7 +2,7 @@
   "author": "Valeri Karpov <val@karpov.io",
   "name": "plugins.mongoosejs.io",
   "description": "Mongoosejs plugins site",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "url": "https://github.com/vkarpov15/mongooseplugins"
   },
