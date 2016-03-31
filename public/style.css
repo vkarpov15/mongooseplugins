@@ -49,7 +49,7 @@ form {
 #term {
   font-size: 34px;
   line-height: 35px;
-  width: 457px;
+  width: 100%;
   color: #414141;
   margin-bottom: 8px;
 }
@@ -93,6 +93,10 @@ form {
   display: block;
 }
 
+#result h2 {
+  margin-top: 25px;
+}
+
 a, a:visited {
   color: #800;
 }
@@ -107,7 +111,7 @@ a, a:visited {
   font-size: 12px;
 }
 
-.watchers { 
+.watchers {
   /*background: transparent url(/eye.png) no-repeat;*/
 }
 .time, .watchers strong {
@@ -145,8 +149,7 @@ a, a:visited {
   #term {
     font-size: 22px;
     line-height: 24px;
-    width: 290px;
-    margin-right: 5px;
+    width: 100%;
     color: #414141;
   }
   #search {
@@ -179,8 +182,7 @@ a, a:visited {
   #term {
     font-size: 14px;
     line-height: 16px;
-    width: 180px;
-    margin-right: 5px;
+    width: 100%;
     color: #414141;
   }
   #search {
