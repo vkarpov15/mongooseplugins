@@ -71,6 +71,10 @@ h3 a {
   display: block;
 }
 
+#result h2 {
+  margin-top: 25px;
+}
+
 a, a:visited {
   color: #800;
 }

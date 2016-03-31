@@ -35,9 +35,17 @@ var SearchResults = function SearchResults(sources) {
     return h('li', [h('h3', [h('a', { href: 'http://npmjs.org/package/' + pkg.name + ' ' }, [pkg.name])]), h('p', { 'class': 'description' }, [pkg.description]), h('p', { 'class': 'updated' }, ['Updated At: ', readableTime(R.view(time, pkg))])]);
   };
 
-  var component$ = sources.results$.map(function (packages) {
+  var renderPackages = function renderPackages(packages) {
+    if (packages == null) {
+      return null;
+    }
+    if (!packages.length) {
+      return h('ul', { id: 'result' }, [h('h2', ['No Results'])]);
+    }
     return h('ul', { id: 'result' }, R.map(renderPackage, packages));
-  });
+  };
+
+  var component$ = sources.results$.map(renderPackages);
 
   return { component$: component$ };
 };
@@ -45,7 +53,7 @@ var SearchResults = function SearchResults(sources) {
 var main = function main(sources) {
   var results$ = sources.HTTP.mergeAll().map(function (res) {
     return res.body.packages;
-  }).startWith([]);
+  }).startWith(null);
 
   sources.results$ = results$;
   sources.results$.subscribe();
