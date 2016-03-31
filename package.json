@@ -1,8 +1,8 @@
 {
-  "author": "Aaron Heckmann <aaron.heckmann+github@gmail.com>",
+  "author": "Valeri Karpov <val@karpov.io",
   "name": "plugins.mongoosejs.io",
   "description": "Mongoosejs plugins site",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "repository": {
     "url": "https://github.com/vkarpov15/mongooseplugins"
   },
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "compile": "browserify -o public/main.js lib/client.js",
-    "deploy": "switchblade -s start-prod -t stop-prod -h plugins.mongoosejs.io ./*.js ./lib/* ./routes/* ./views/* ./public/* ./package.json",
+    "deploy": "switchblade -s start-prod -t stop-prod -h plugins.mongoosejs.io ./*.js ./lib/* ./routes/* ./public/* ./package.json",
     "postinstall": "m use 3.2.3",
     "start": "node .",
     "start-prod": "env PORT=80 forever start --append --uid plugins index.js",
