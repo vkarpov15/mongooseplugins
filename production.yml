@@ -1,11 +1,11 @@
 app:
   build: ./
   ports:
-  - 80:80
+  - 80:8080
   links:
   - mongo
   environment:
     MONGODB: mongodb://mongo:27017/plugins
-    PORT: 80
+    PORT: 8080
   volumes:
   - ./:/app
