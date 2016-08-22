@@ -11,7 +11,7 @@ var Observable = require('rx').Observable;
 var R = require('ramda');
 
 var Header = function Header(sources) {
-  var component = h('div', [h('div#header', [h('h1', [h('a', { href: 'http://mongoose.com' }, [h('span.mongoose', ['mongoose'])])])]), h('h2', ['plugins search'])]);
+  var component = h('div', [h('div#header', [h('h1', [h('a', { href: 'http://mongoosejs.com' }, [h('span.mongoose', ['mongoose'])])])]), h('h2', ['plugins search'])]);
   var component$ = Observable.just(component);
 
   return { component$: component$ };
