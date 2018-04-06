@@ -1,19 +1,8 @@
 'use strict';
 
-const co = require('co');
-const mkdirp = require('mkdirp');
+const http = require('http');
+const serveStatic = require('serve-static');
 
-const server = require('./lib/server');
+const serve = serveStatic('./');
 
-
-co(function*() {
-  const uri = process.env.MONGODB || 'mongodb://localhost:27017/plugins';
-  const port = process.env.PORT || 3000;
-
-  yield server(port, uri, console.log);
-
-  console.log(`Listening on ${port}`);
-}).catch(error => {
-  console.error(error.stack);
-  process.exit(1);
-});
+http.createServer((req, res) => { serve(req, res, () => {}); }).listen(8472);
