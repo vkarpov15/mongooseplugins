@@ -1,15 +1,30 @@
+const fs = require('fs');
+const plugin = require('./plugin');
+
+const pages = [
+  {
+    file: './plugins/autopopulate.html',
+    template: plugin,
+    props: { owner: 'mongodb-js', repo: 'mongoose-autopopulate' }
+  }
+];
+
+run().catch(error => console.error(error.stack));
+
+async function run() {
+  for (const { file, template, props } of pages) {
+    const html = await template(props);
+    fs.writeFileSync(file, layout(html));
+  }
+};
+
+const layout = content => `
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Mongoose Plugins Search</title>
-    <link rel="stylesheet" href="./public/style.css">
-
-    <style>
-      a, a:visited {
-        color: #800;
-      }
-    </style>
+    <link rel="stylesheet" href="/public/style.css">
 
     <script type="text/javascript">
       !function(name,path,ctx){
@@ -31,39 +46,8 @@
   </head>
   <body>
     <div id="wrap">
-      <div>
-        <div id="header">
-          <h1>
-            <a href="http://mongoosejs.com">
-              <span class="mongoose">
-                mongoose
-              </span>
-            </a>
-          </h1>
-          <h2 id="plugins-subheader">
-            plugins search
-          </h2>
-          <div>
-            <input id="term" placeholder="Search">
-          </div>
-          <ul id="result">
-            <div id="addyourown">
-              <p>
-                Want to show off your <a href="http://mongoosejs.com/docs/plugins.html">plugin</a> here?
-                Publish it to <a href="http://www.npmjs.com">npm</a> and add "mongoose" as a <a href="https://docs.npmjs.com/files/package.json#keywords">keyword</a>.
-              </p>
-              <p class="improve">
-                <a href="https://github.com/vkarpov15/mongooseplugins">
-                  improve this site
-                </a>
-              </p>
-              <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
-            </div>
-          </ul>
-        </div>
-      </div>
+      ${content}
     </div>
-
-    <script type="text/javascript" src="./public/main.js"></script>
   </body>
 </html>
+`;

@@ -7,7 +7,7 @@ body {
 }
 
 #wrap {
-  width: 600px;
+  width: 700px;
   margin: 0 auto;
 }
 
@@ -20,18 +20,22 @@ h1 a {
 }
 
 h2 {
+  color: #818181;
+}
+
+h2#plugins-subheader {
   font-size: 25px;
   font-weight: 100;
   margin-top: -42px;
   margin-bottom: 65px;
-  color: #818181;
 }
 
 h3 {
   font-size: 25px;
   margin-top: 3px;
 }
-h3 a {
+
+a, a:visited {
   text-decoration: none;
 }
 
@@ -40,6 +44,7 @@ h3 a {
   font-weight: 100;
   text-indent: -7px;
   letter-spacing: -14px;
+  color: #800;
 }
 
 form {
@@ -92,10 +97,6 @@ form {
 
 #result h2 {
   margin-top: 25px;
-}
-
-a, a:visited {
-  color: #800;
 }
 
 #addyourown {

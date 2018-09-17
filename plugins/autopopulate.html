@@ -1,0 +1,271 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Mongoose Plugins Search</title>
+    <link rel="stylesheet" href="/public/style.css">
+
+    <script type="text/javascript">
+      !function(name,path,ctx){
+        var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
+      }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js',this);
+
+      KeenAsync.ready(function(){
+        var client = new KeenAsync({
+          projectId: '5ac79d81c9e77c0001a02e1d',
+          writeKey: '3A2D0DE1DA53EAE8EDB843737C817C0285F1D7DECEE598E50D42D2F2D3213484D7A1303570E2F989EE0C3DAE48A5FFD967F70561E9B41B04B011AA5B1D8CA20FA0E0450B16F2DBC6E7C31465DE4C78F606ADAAD6365AC462EA549CF8BE2E7119'
+        });
+
+        // Record an event
+        client.recordEvent('pageviews', {
+          url: window.location.pathname
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      
+    <script type="text/javascript" src="/public/native.js"></script>
+    <link rel="stylesheet" href="/public/inlinecpc.css">
+    <link rel="stylesheet" href="/public/highlight.css">
+
+    <script>
+      _native.init("CK7DT53Y",{
+        targetClass: 'native-inline'
+      });
+    </script>
+
+    <div>
+      <h1 id="mongoose-autopopulate">mongoose-autopopulate</h1>
+<p>Always <code>populate()</code> certain fields in your mongoose schemas</p>
+<p><a href="https://travis-ci.org/mongodb-js/mongoose-autopopulate"><img src="https://travis-ci.org/mongodb-js/mongoose-autopopulate.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/mongodb-js/mongoose-autopopulate?branch=master"><img src="https://coveralls.io/repos/mongodb-js/mongoose-autopopulate/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<p><strong>Note:</strong> This plugin will <em>only</em> work with mongoose &gt;= 4.0. Do NOT use
+this plugin with mongoose 3.x. You have been warned.</p>
+<p><strong>Note:</strong> population is a powerful feature, but it has limitations and
+helps you get away with poor schema design.  In particular, it is usually
+bad MongoDB schema design to include arrays that grow without bound in
+your documents. Do not include a constantly-growing array of ObjectIds
+in your schema - your data will become unwieldy as the array grows and
+you will eventually hit the <a href="http://docs.mongodb.org/manual/reference/limits/#BSON-Document-Size">16mb document size limit</a>.
+In general, think carefully when designing your schemas.</p>
+
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      <h1 id="api">API</h1>
+<p>The <code>mongoose-autopopulate</code> module exposes a single function that you can
+pass to the <code>mongoose.Schema.prototype.plugin()</code> function. Below you will
+see how to use this function.</p>
+<p>Suppose you have two collections, &quot;people&quot; and &quot;bands&quot;. The <code>People</code> model
+looks like this:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> personSchema = <span class="hljs-keyword">new</span> Schema({ <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>, <span class="hljs-attr">birthName</span>: <span class="hljs-built_in">String</span> });
+Person = mongoose.model(<span class="hljs-string">'people'</span>, personSchema, <span class="hljs-string">'people'</span>);</code></pre>
+<p>Suppose your &quot;people&quot; collection has one document:</p>
+<pre><code class="language-javascript">{
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'Axl Rose'</span>,
+  <span class="hljs-attr">birthName</span>: <span class="hljs-string">'William Bruce Rose, Jr.'</span>,
+  <span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>
+};</code></pre>
+<p>And your &quot;bands&quot; collection has one document:</p>
+<pre><code class="language-javascript">{
+  <span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abd'</span>,
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span>,
+  <span class="hljs-attr">lead</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>,
+  <span class="hljs-attr">members</span>: [<span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>]
+}</code></pre>
+
+
+<h1 id="mongoose-autopopulate-plugin">mongoose-autopopulate plugin</h1>
+
+
+<h2 id="it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</h2>
+<p>You can set the <code>autopopulate</code> option for the <code>lead</code> field.
+This means that, every time you call <code>find()</code> or <code>findOne()</code>,
+<code>mongoose-autopopulate</code> will automatically call <code>.populate(&#39;lead&#39;)</code>
+for you.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">lead</span>: { <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> }
+});
+bandSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">var</span> Band = mongoose.model(<span class="hljs-string">'band3'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+  assert.ifError(error);
+  assert.equal(<span class="hljs-string">'Axl Rose'</span>, doc.lead.name);
+  assert.equal(<span class="hljs-string">'William Bruce Rose, Jr.'</span>, doc.lead.birthName);
+  done();
+});</code></pre>
+
+
+<h2 id="it-supports-document-arrays">It supports document arrays</h2>
+<p><code>mongoose-autopopulate</code> also works on arrays.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">members</span>: [{ <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> }]
+});
+bandSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">var</span> Band = mongoose.model(<span class="hljs-string">'band4'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+  assert.ifError(error);
+  assert.equal(<span class="hljs-string">'Axl Rose'</span>, doc.members[<span class="hljs-number">0</span>].name);
+  assert.equal(<span class="hljs-string">'William Bruce Rose, Jr.'</span>, doc.members[<span class="hljs-number">0</span>].birthName);
+  done();
+});</code></pre>
+
+
+<h2 id="it-can-specify-an-options-argument">It can specify an options argument</h2>
+<p>Advanced users of <code>populate()</code> may want to specify additional
+options, such as selecting fields. If you set the <code>autopopulate</code>
+option to an object, <code>mongoose-autopopulate</code> will merge the object
+into populate options. The <code>findOne()</code> below is equivalent to
+<code>Band.findOne({ name: &quot;Guns N&#39; Roses&quot; }).populate({ path: &#39;lead&#39;, select: &#39;name });</code></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">lead</span>: { <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: { <span class="hljs-attr">select</span>: <span class="hljs-string">'name'</span> } }
+});
+bandSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">var</span> Band = mongoose.model(<span class="hljs-string">'band5'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+  assert.ifError(error);
+  assert.equal(<span class="hljs-string">'Axl Rose'</span>, doc.lead.name);
+  assert.ok(!doc.lead.birthName);
+  done();
+});</code></pre>
+
+
+<h2 id="it-can-specify-a-function-that-returns-options">It can specify a function that returns options</h2>
+<p>You can also set the <code>autopopulate</code> option to be a function.
+Then <code>mongoose-autopopulate</code> will call the function with
+the query object as the context and use the return value.
+The below <code>populate()</code> uses the same options as the previous
+example.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> numCalls = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">var</span> optionsFunction = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  ++numCalls;
+  <span class="hljs-keyword">return</span> { <span class="hljs-attr">select</span>: <span class="hljs-string">'name'</span> };
+};
+
+<span class="hljs-keyword">var</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">lead</span>: { <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: optionsFunction }
+});
+bandSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">var</span> Band = mongoose.model(<span class="hljs-string">'band6'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+Band.find({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, docs</span>) </span>{
+  assert.ifError(error);
+  assert.equal(<span class="hljs-number">1</span>, docs.length);
+  assert.equal(<span class="hljs-number">1</span>, numCalls);
+  <span class="hljs-keyword">var</span> doc = docs[<span class="hljs-number">0</span>];
+  assert.equal(<span class="hljs-string">'Axl Rose'</span>, doc.lead.name);
+  assert.ok(!doc.lead.birthName);
+  done();
+});</code></pre>
+
+
+<h2 id="it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</h2>
+<p>If you set the <code>autopopulate</code> option to <code>false</code> on a query, autopopulate
+will be disabled. This is handy if you want to autopopulate by default,
+but opt-out for special cases.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">lead</span>: { <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> }
+});
+bandSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">var</span> Band = mongoose.model(<span class="hljs-string">'band7'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }, {}, { <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">false</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+  assert.ifError(error);
+  assert.ok(doc.lead <span class="hljs-keyword">instanceof</span> mongoose.Types.ObjectId);
+  assert.ok(!doc.populated(<span class="hljs-string">'lead'</span>));
+  done();
+});</code></pre>
+
+
+<h2 id="it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</h2>
+<p>Say you have a model <code>User</code> that has the autopopulate plugin and you&#39;re
+populating users from a different model. To disable autopopulate, you
+need to set <code>autopopulate: false</code> as a populate option, not a query
+option.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> userSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">friends</span>: [{
+    <span class="hljs-attr">type</span>: Schema.Types.ObjectId,
+    <span class="hljs-attr">ref</span>: <span class="hljs-string">'User'</span>,
+    <span class="hljs-attr">autopopulate</span>: { <span class="hljs-attr">maxDepth</span>: <span class="hljs-number">2</span> }
+  }]
+});
+userSchema.plugin(autopopulate);
+
+<span class="hljs-keyword">const</span> responseSchema = <span class="hljs-keyword">new</span> Schema({
+  <span class="hljs-attr">user</span>: {
+    <span class="hljs-attr">type</span>: Schema.Types.ObjectId,
+    <span class="hljs-attr">ref</span>: <span class="hljs-string">'User'</span>
+  }
+});
+
+<span class="hljs-keyword">const</span> User = mongoose.model(<span class="hljs-string">'User'</span>, userSchema);
+<span class="hljs-keyword">const</span> Response = mongoose.model(<span class="hljs-string">'Response'</span>, responseSchema);
+
+<span class="hljs-keyword">return</span> co(<span class="hljs-function"><span class="hljs-keyword">function</span>*(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> axl = <span class="hljs-keyword">new</span> User({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Axl'</span> });
+  <span class="hljs-keyword">const</span> slash = <span class="hljs-keyword">new</span> User({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Slash'</span>, <span class="hljs-attr">friends</span>: [axl._id] });
+  axl.friends.push(slash._id);
+
+  <span class="hljs-keyword">yield</span> [axl.save(), slash.save()];
+  <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">yield</span> Response.create({ <span class="hljs-attr">user</span>: axl._id });
+
+  r = <span class="hljs-keyword">yield</span> Response.findById(r._id).
+    <span class="hljs-comment">// Because `User` is the foreign model, you need to disable autopopulate</span>
+    <span class="hljs-comment">// in the populate options below, not the query options</span>
+    populate({ <span class="hljs-attr">path</span>: <span class="hljs-string">'user'</span>, <span class="hljs-attr">options</span>: { <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">false</span> } });
+});</code></pre>
+
+
+<h2 id="it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></h2>
+<p>Recursive populate can lead to messy infinite recursion, so this plugin
+supports a <code>maxDepth</code> option that limits how deep recursive population
+will go. The <code>maxDepth</code> option is 10 by default</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">return</span> co(<span class="hljs-function"><span class="hljs-keyword">function</span>*(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> accountSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-attr">friends</span>: [{
+      <span class="hljs-attr">type</span>: mongoose.Schema.Types.ObjectId,
+      <span class="hljs-attr">ref</span>: <span class="hljs-string">'Account'</span>,
+      <span class="hljs-comment">// This is a recursive relationship, `friends` points to a list</span>
+      <span class="hljs-comment">// of accounts. If we didn't limit the depth, this would result</span>
+      <span class="hljs-comment">// in infinite recursion!</span>
+      autopopulate: { <span class="hljs-attr">maxDepth</span>: <span class="hljs-number">2</span> }
+    }]
+  });
+  accountSchema.plugin(autopopulate);
+
+  <span class="hljs-keyword">const</span> Account = mongoose.model(<span class="hljs-string">'Account'</span>, accountSchema);
+
+  <span class="hljs-keyword">const</span> axl = <span class="hljs-keyword">new</span> Account({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Axl'</span> });
+  <span class="hljs-keyword">const</span> slash = <span class="hljs-keyword">new</span> Account({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Slash'</span>, <span class="hljs-attr">friends</span>: [axl._id] });
+  axl.friends.push(slash._id);
+
+  <span class="hljs-keyword">yield</span> axl.save();
+  <span class="hljs-keyword">yield</span> slash.save();
+
+  <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">yield</span> Account.findById(axl._id);
+
+  assert.equal(doc.friends[<span class="hljs-number">0</span>].name, <span class="hljs-string">'Slash'</span>);
+  assert.equal(doc.friends[<span class="hljs-number">0</span>].friends[<span class="hljs-number">0</span>].name, <span class="hljs-string">'Axl'</span>);
+  <span class="hljs-comment">// Only populate 2 levels deep, 3rd level will still be an `_id`</span>
+  assert.equal(doc.friends[<span class="hljs-number">0</span>].friends[<span class="hljs-number">0</span>].friends[<span class="hljs-number">0</span>].toString(),
+    slash._id.toHexString());
+});</code></pre>
+
+    </div>
+  
+    </div>
+  </body>
+</html>
