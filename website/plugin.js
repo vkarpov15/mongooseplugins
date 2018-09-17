@@ -38,6 +38,11 @@ module.exports = async (props) => {
     <script type="text/javascript" src="/public/native.js"></script>
     <link rel="stylesheet" href="/public/inlinecpc.css">
     <link rel="stylesheet" href="/public/highlight.css">
+    <style>
+      a, a:visited {
+        color: #0366d6;
+      }
+    </style>
 
     <script>
       _native.init("CK7DT53Y",{
