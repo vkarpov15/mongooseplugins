@@ -38,8 +38,11 @@
     </script>
 
     <div>
-      <h1 id="mongoose-autopopulate">mongoose-autopopulate</h1>
-<p>Always <code>populate()</code> certain fields in your mongoose schemas</p>
+      <h1>mongoose-autopopulate</h1>
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      <p>Always <code>populate()</code> certain fields in your mongoose schemas</p>
 <p><a href="https://travis-ci.org/mongodb-js/mongoose-autopopulate"><img src="https://travis-ci.org/mongodb-js/mongoose-autopopulate.svg?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/mongodb-js/mongoose-autopopulate?branch=master"><img src="https://coveralls.io/repos/mongodb-js/mongoose-autopopulate/badge.svg?branch=master" alt="Coverage Status"></a></p>
 <p><strong>Note:</strong> This plugin will <em>only</em> work with mongoose &gt;= 4.0. Do NOT use
@@ -52,9 +55,30 @@ in your schema - your data will become unwieldy as the array grows and
 you will eventually hit the <a href="http://docs.mongodb.org/manual/reference/limits/#BSON-Document-Size">16mb document size limit</a>.
 In general, think carefully when designing your schemas.</p>
 
-      <div class="native-inline">
-        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
-      </div>
+      <ul>
+<li><a href="#api">API</a></li>
+<li><a href="#mongoose-autopopulate-plugin">mongoose-autopopulate plugin</a><ul>
+<li><a href="#it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</a></li>
+<li><a href="#it-supports-document-arrays">It supports document arrays</a></li>
+<li><a href="#it-can-specify-an-options-argument">It can specify an options argument</a></li>
+<li><a href="#it-can-specify-a-function-that-returns-options">It can specify a function that returns options</a></li>
+<li><a href="#it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</a></li>
+<li><a href="#it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</a></li>
+<li><a href="#it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#081--2018-09-02">0.8.1 / 2018-09-02</a></li>
+<li><a href="#080--2018-07-01">0.8.0 / 2018-07-01</a></li>
+<li><a href="#070--2018-05-10">0.7.0 / 2018-05-10</a></li>
+<li><a href="#050--2016-11-29">0.5.0 / 2016-11-29</a></li>
+<li><a href="#040--2015-09-03">0.4.0 / 2015-09-03</a></li>
+<li><a href="#030--2015-07-30">0.3.0 / 2015-07-30</a></li>
+<li><a href="#020--2015-06-27">0.2.0 / 2015-06-27</a></li>
+</ul>
+</li>
+</ul>
+
       <h1 id="api">API</h1>
 <p>The <code>mongoose-autopopulate</code> module exposes a single function that you can
 pass to the <code>mongoose.Schema.prototype.plugin()</code> function. Below you will
@@ -263,6 +287,40 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
   assert.equal(doc.friends[<span class="hljs-number">0</span>].friends[<span class="hljs-number">0</span>].friends[<span class="hljs-number">0</span>].toString(),
     slash._id.toHexString());
 });</code></pre>
+
+
+      <h1 id="changelog">Changelog</h1>
+<h2 id="0-8-1-2018-09-02">0.8.1 / 2018-09-02</h2>
+<ul>
+<li>fix: call function with options and include refPath in options #15</li>
+</ul>
+<h2 id="0-8-0-2018-07-01">0.8.0 / 2018-07-01</h2>
+<ul>
+<li>fix: add support for findOneAndUpdate() with autopopulate #42</li>
+</ul>
+<h2 id="0-7-0-2018-05-10">0.7.0 / 2018-05-10</h2>
+<ul>
+<li>BREAKING CHANGE: drop support for Node.js &lt; 4.0.0</li>
+<li>feat: add <code>maxDepth</code> option, set to 10 by default #37 #20 #11</li>
+</ul>
+<h2 id="0-5-0-2016-11-29">0.5.0 / 2016-11-29</h2>
+<ul>
+<li>feat: support lean #27 #14 <a href="https://github.com/siboulet">siboulet</a></li>
+<li>feat: support virtual autopopulate #24 <a href="https://github.com/siboulet">siboulet</a></li>
+</ul>
+<h2 id="0-4-0-2015-09-03">0.4.0 / 2015-09-03</h2>
+<ul>
+<li>added; support for arrays #9 <a href="https://github.com/rerthal">rerthal</a></li>
+</ul>
+<h2 id="0-3-0-2015-07-30">0.3.0 / 2015-07-30</h2>
+<ul>
+<li>added; support of autopopulate in nested schemas #5 <a href="https://github.com/eloytoro">eloytoro</a></li>
+<li>fixed; changed mongoose peer dependency to 4.x #4</li>
+</ul>
+<h2 id="0-2-0-2015-06-27">0.2.0 / 2015-06-27</h2>
+<ul>
+<li>added; support for nested schemas #3 <a href="https://github.com/siboulet">siboulet</a></li>
+</ul>
 
     </div>
   

@@ -1,6 +1,7 @@
 const highlight = require('highlight.js');
 const marked = require('marked');
 const superagent = require('superagent');
+const toc = require('markdown-toc');
 
 marked.setOptions({
   highlight: function(code) {
@@ -11,11 +12,27 @@ marked.setOptions({
 module.exports = async (props) => {
   const { owner, repo } = props;
 
+  let allMd = '';
   const paragraphs = await superagent.
     get(`https://raw.githubusercontent.com/${owner}/${repo}/master/README.md`).
-    then(res => res.text).
+    then(res => {
+      const txt = res.text.split('\n').slice(1).join('\n');
+      allMd += txt;
+      return txt;
+    }).
     then(res => splitIntoParagraphs(res)).
     then(paragraphs => paragraphs.map(p => marked(p)));
+
+  const changelog = await superagent.
+    get(`https://raw.githubusercontent.com/${owner}/${repo}/master/History.md`).
+    then(res => {
+      const text = `# Changelog\n${res.text.replace(/^=+$/mg, '-------')}`;
+      allMd += '\n\n' + text;
+      return text;
+    }).
+    then(txt => marked(txt));
+
+  const contents = toc(allMd);
 
   return `
     <script type="text/javascript" src="/public/native.js"></script>
@@ -29,11 +46,15 @@ module.exports = async (props) => {
     </script>
 
     <div>
-      ${paragraphs[0]}
+      <h1>${repo}</h1>
       <div class="native-inline">
         <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
       </div>
+      ${paragraphs[0]}
+      ${marked(contents.content)}
       ${paragraphs.slice(1).join('\n\n')}
+
+      ${changelog}
     </div>
   `;
 };
