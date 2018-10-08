@@ -23,6 +23,16 @@ module.exports = async (props) => {
     then(res => splitIntoParagraphs(res)).
     then(paragraphs => paragraphs.map(p => marked(p)));
 
+  const examples = await superagent.
+    get(`https://raw.githubusercontent.com/${owner}/${repo}/master/examples.md`).
+    then(res => {
+      const txt = res.text.split('\n').slice().join('\n');
+      allMd += txt;
+      return txt;
+    }).
+    then(res => splitIntoParagraphs(res)).
+    then(examples => examples.map(p => marked(p)));
+
   const changelog = await superagent.
     get(`https://raw.githubusercontent.com/${owner}/${repo}/master/History.md`).
     then(res => {
@@ -32,12 +42,13 @@ module.exports = async (props) => {
     }).
     then(txt => marked(txt));
 
-  const contents = toc(allMd);
+  const _toc = toc(allMd);
 
   return `
     <script type="text/javascript" src="/public/native.js"></script>
     <link rel="stylesheet" href="/public/inlinecpc.css">
     <link rel="stylesheet" href="/public/highlight.css">
+    <link rel="stylesheet" href="/public/plugin.css">
     <style>
       a, a:visited {
         color: #0366d6;
@@ -50,14 +61,20 @@ module.exports = async (props) => {
       });
     </script>
 
-    <div>
+    <div class="content">
+      <div class="toc">
+        ${marked(_toc.content)}
+        <div id="carbonads-wrapper">
+          <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
+        </div>
+      </div>
       <h1>${repo}</h1>
       <div class="native-inline">
         <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
       </div>
-      ${paragraphs[0]}
-      ${marked(contents.content)}
       ${paragraphs.slice(1).join('\n\n')}
+
+      ${examples.join('\n\n')}
 
       ${changelog}
     </div>

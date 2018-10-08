@@ -30,6 +30,7 @@
     <script type="text/javascript" src="/public/native.js"></script>
     <link rel="stylesheet" href="/public/inlinecpc.css">
     <link rel="stylesheet" href="/public/highlight.css">
+    <link rel="stylesheet" href="/public/plugin.css">
     <style>
       a, a:visited {
         color: #0366d6;
@@ -42,26 +43,10 @@
       });
     </script>
 
-    <div>
-      <h1>mongoose-autopopulate</h1>
-      <div class="native-inline">
-        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
-      </div>
-      <p>Always <code>populate()</code> certain fields in your mongoose schemas</p>
-<p><a href="https://travis-ci.org/mongodb-js/mongoose-autopopulate"><img src="https://travis-ci.org/mongodb-js/mongoose-autopopulate.svg?branch=master" alt="Build Status"></a>
-<a href="https://coveralls.io/r/mongodb-js/mongoose-autopopulate?branch=master"><img src="https://coveralls.io/repos/mongodb-js/mongoose-autopopulate/badge.svg?branch=master" alt="Coverage Status"></a></p>
-<p><strong>Note:</strong> This plugin will <em>only</em> work with mongoose &gt;= 4.0. Do NOT use
-this plugin with mongoose 3.x. You have been warned.</p>
-<p><strong>Note:</strong> population is a powerful feature, but it has limitations and
-helps you get away with poor schema design.  In particular, it is usually
-bad MongoDB schema design to include arrays that grow without bound in
-your documents. Do not include a constantly-growing array of ObjectIds
-in your schema - your data will become unwieldy as the array grows and
-you will eventually hit the <a href="http://docs.mongodb.org/manual/reference/limits/#BSON-Document-Size">16mb document size limit</a>.
-In general, think carefully when designing your schemas.</p>
-
-      <ul>
-<li><a href="#api">API</a></li>
+    <div class="content">
+      <div class="toc">
+        <ul>
+<li><a href="#usage">Usage</a></li>
 <li><a href="#mongoose-autopopulate-plugin">mongoose-autopopulate plugin</a><ul>
 <li><a href="#it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</a></li>
 <li><a href="#it-supports-document-arrays">It supports document arrays</a></li>
@@ -84,33 +69,52 @@ In general, think carefully when designing your schemas.</p>
 </li>
 </ul>
 
-      <h1 id="api">API</h1>
+        <div id="carbonads-wrapper">
+          <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
+        </div>
+      </div>
+      <h1>mongoose-autopopulate</h1>
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      <h1 id="usage">Usage</h1>
 <p>The <code>mongoose-autopopulate</code> module exposes a single function that you can
-pass to the <code>mongoose.Schema.prototype.plugin()</code> function. Below you will
-see how to use this function.</p>
+pass to <a href="https://mongoosejs.com/docs/api.html#schema_Schema-plugin">Mongoose schema&#39;s <code>plugin()</code> function</a>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">populatedField</span>: {
+    <span class="hljs-attr">type</span>: mongoose.Schema.Types.ObjectId,
+    <span class="hljs-attr">ref</span>: <span class="hljs-string">'ForeignModel'</span>,
+    <span class="hljs-comment">// The below option tells this plugin to always call `populate()` on</span>
+    <span class="hljs-comment">// `populatedField`</span>
+    autopopulate: <span class="hljs-literal">true</span>
+  }
+});
+schema.plugin(<span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-autopopulate'</span>));</code></pre>
+
+
+      
+
+<h1 id="mongoose-autopopulate-plugin">mongoose-autopopulate plugin</h1>
+
+
+<h2 id="it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</h2>
 <p>Suppose you have two collections, &quot;people&quot; and &quot;bands&quot;. The <code>People</code> model
 looks like this:</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">var</span> personSchema = <span class="hljs-keyword">new</span> Schema({ <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>, <span class="hljs-attr">birthName</span>: <span class="hljs-built_in">String</span> });
 Person = mongoose.model(<span class="hljs-string">'people'</span>, personSchema, <span class="hljs-string">'people'</span>);</code></pre>
 <p>Suppose your &quot;people&quot; collection has one document:</p>
 <pre><code class="language-javascript">{
-  <span class="hljs-attr">name</span>: <span class="hljs-string">'Axl Rose'</span>,
-  <span class="hljs-attr">birthName</span>: <span class="hljs-string">'William Bruce Rose, Jr.'</span>,
-  <span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>
+<span class="hljs-attr">name</span>: <span class="hljs-string">'Axl Rose'</span>,
+<span class="hljs-attr">birthName</span>: <span class="hljs-string">'William Bruce Rose, Jr.'</span>,
+<span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>
 };</code></pre>
 <p>And your &quot;bands&quot; collection has one document:</p>
 <pre><code class="language-javascript">{
-  <span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abd'</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span>,
-  <span class="hljs-attr">lead</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>,
-  <span class="hljs-attr">members</span>: [<span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>]
+<span class="hljs-attr">_id</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abd'</span>,
+<span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span>,
+<span class="hljs-attr">lead</span>: <span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>,
+<span class="hljs-attr">members</span>: [<span class="hljs-string">'54ef3f374849dcaa649a3abc'</span>]
 }</code></pre>
-
-
-<h1 id="mongoose-autopopulate-plugin">mongoose-autopopulate plugin</h1>
-
-
-<h2 id="it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</h2>
 <p>You can set the <code>autopopulate</code> option for the <code>lead</code> field.
 This means that, every time you call <code>find()</code> or <code>findOne()</code>,
 <code>mongoose-autopopulate</code> will automatically call <code>.populate(&#39;lead&#39;)</code>

@@ -1,0 +1,22 @@
+.content {
+  position: relative;
+}
+
+.toc {
+  position: fixed;
+  left: 0px;
+  line-height: 1.5em;
+  width: 350px;
+}
+
+.toc ul {
+  padding-left: 1em;
+  margin-left: 1em;
+}
+
+#carbonads-wrapper {
+  margin-top: 25px;
+  padding-top: 5px;
+  border-top: 1px solid #dfdfdf;
+  width: 350px;
+}
