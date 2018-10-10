@@ -11,16 +11,16 @@
 
 .toc ul {
   padding-left: 1em;
-  margin-left: 1em;
+  margin-left: 10px;
 }
 
 .toc h2 a {
-  margin-left: 0.5em;
+  margin-left: 10px;
   color: #818181;
 }
 
 #select-plugin {
-  margin-left: 1em;
+  margin-left: 10px;
 }
 
 #select-plugin-hidden {
