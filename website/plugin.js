@@ -1,5 +1,6 @@
 const highlight = require('highlight.js');
 const marked = require('marked');
+const pages = require('./pages');
 const superagent = require('superagent');
 const toc = require('markdown-toc');
 
@@ -13,6 +14,7 @@ module.exports = async (props) => {
   const { owner, repo } = props;
 
   let allMd = '';
+  console.log('Get readme');
   const paragraphs = await superagent.
     get(`https://raw.githubusercontent.com/${owner}/${repo}/master/README.md`).
     then(res => {
@@ -23,6 +25,7 @@ module.exports = async (props) => {
     then(res => splitIntoParagraphs(res)).
     then(paragraphs => paragraphs.map(p => marked(p)));
 
+  console.log('Get examples');
   const examples = await superagent.
     get(`https://raw.githubusercontent.com/${owner}/${repo}/master/examples.md`).
     then(res => {
@@ -33,14 +36,29 @@ module.exports = async (props) => {
     then(res => splitIntoParagraphs(res)).
     then(examples => examples.map(p => marked(p)));
 
-  const changelog = await superagent.
-    get(`https://raw.githubusercontent.com/${owner}/${repo}/master/History.md`).
-    then(res => {
-      const text = `# Changelog\n${res.text.replace(/^=+$/mg, '-------')}`;
-      allMd += '\n\n' + text;
-      return text;
-    }).
-    then(txt => marked(txt));
+  let changelog = null;
+  for (const file of ['History.md', 'CHANGELOG.md']) {
+    changelog = await superagent.
+      get(`https://raw.githubusercontent.com/${owner}/${repo}/master/${file}`).
+      then(res => {
+        const text = `# Changelog\n${res.text.replace(/^=+$/mg, '-------')}`;
+        allMd += '\n\n' + text;
+        return text;
+      }).
+      then(txt => marked(txt)).
+      catch(error => {
+        if (error.status === 404) {
+          return null;
+        }
+        throw error;
+      });
+    if (changelog != null) {
+      break;
+    }
+  }
+  if (changelog == null) {
+    throw new Error('changelog not found');
+  }
 
   const _toc = toc(allMd);
 
@@ -63,6 +81,10 @@ module.exports = async (props) => {
 
     <div class="content">
       <div class="toc">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          ${select(props)}
+        </div>
         ${marked(_toc.content)}
         <div id="carbonads-wrapper">
           <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
@@ -97,4 +119,15 @@ function splitIntoParagraphs(md) {
   }
 
   return paragraphs.map(p => p.join('\n'));
+}
+
+function select(props) {
+  return '<div id="select-plugin">' +
+    `<a class="select-plugin-this-repo" href="./${props.path}">${props.repo}</a> <span class="right-arrow"></span>` +
+    '<div id="select-plugin-hidden">' +
+    pages.filter(p => p.props.repo !== props.repo).map(p => {
+      return `<a href="./${p.props.path}">${p.props.repo}</a>`;
+    }).join('\n') +
+    '</div>' +
+    '</div>';
 }

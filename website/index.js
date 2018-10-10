@@ -1,19 +1,13 @@
 const fs = require('fs');
+const pages = require('./pages');
 const plugin = require('./plugin');
-
-const pages = [
-  {
-    file: './plugins/autopopulate.html',
-    template: plugin,
-    props: { owner: 'mongodb-js', repo: 'mongoose-autopopulate' }
-  }
-];
 
 run().catch(error => console.error(error.stack));
 
 async function run() {
-  for (const { file, template, props } of pages) {
-    const html = await template(props);
+  for (const { file, props } of pages) {
+    console.log(`Generate ${file}`);
+    const html = await plugin(props);
     fs.writeFileSync(file, layout(html));
   }
 };

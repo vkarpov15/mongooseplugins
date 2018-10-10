@@ -14,6 +14,39 @@
   margin-left: 1em;
 }
 
+.toc h2 a {
+  margin-left: 0.5em;
+  color: #818181;
+}
+
+#select-plugin {
+  margin-left: 1em;
+}
+
+#select-plugin-hidden {
+  display: none;
+  position: absolute;
+  width: 250px;
+  background-color: #fdfdfd;
+  line-height: 1.5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+#select-plugin .select-plugin-this-repo::after {
+  margin-left: 0.5em;
+  content: "\25BA";
+}
+
+#select-plugin:hover .select-plugin-this-repo::after {
+  margin-left: 0.5em;
+  content: "\25BC";
+}
+
+#select-plugin:hover #select-plugin-hidden {
+  display: block;
+}
+
 #carbonads-wrapper {
   margin-top: 25px;
   padding-top: 5px;
