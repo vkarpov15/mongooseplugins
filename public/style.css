@@ -178,7 +178,7 @@ form {
   h1 {
     margin-top: 0;
   }
-  h2 {
+  h2#plugins-subheader {
     font-size: 15px;
     margin: -24px 0 35px 77px;
   }
@@ -211,7 +211,7 @@ form {
   h1 {
     margin-top: 0;
   }
-  h2 {
+  h2#plugins-subheader {
     font-size: 15px;
     margin: -33px 0 35px 0px;
   }

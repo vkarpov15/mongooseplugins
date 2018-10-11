@@ -44,7 +44,7 @@
     </script>
 
     <div class="content">
-      <div class="toc">
+      <div class="toc desktop">
         <h2><a href="/">Mongoose Plugins</a></h2>
         <div>
           <div id="select-plugin"><a class="select-plugin-this-repo" href="./lean-virtuals">mongoose-lean-virtuals</a> <span class="right-arrow"></span><div id="select-plugin-hidden"><a href="./autopopulate">mongoose-autopopulate</a></div></div>
@@ -57,6 +57,7 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#031--2018-10-10">0.3.1 / 2018-10-10</a></li>
 <li><a href="#030--2018-01-29">0.3.0 / 2018-01-29</a></li>
 </ul>
 </li>
@@ -66,7 +67,36 @@
           <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
         </div>
       </div>
-      <h1>mongoose-lean-virtuals</h1>
+      <h1 id="repo" class="desktop">mongoose-lean-virtuals</h1>
+      <div class="toc mobile">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <select id="select-plugin-mobile" onchange="window.location.href = '/plugins/' + this.value">
+      <option value="autopopulate" >
+        mongoose-autopopulate
+      </option>
+    
+
+      <option value="lean-virtuals" selected>
+        mongoose-lean-virtuals
+      </option>
+    </select>
+        </div>
+        <ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#examples">examples</a><ul>
+<li><a href="#it-attaches-virtuals-to-result-of-find-findone-findbyid-findbyidandupdate-and-findoneandupdate-if-lean">It attaches virtuals to result of find, findOne, findById, findByIdAndUpdate, and findOneAndUpdate if lean</a></li>
+<li><a href="#it-lets-you-choose-which-virtuals-to-apply">It lets you choose which virtuals to apply</a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#031--2018-10-10">0.3.1 / 2018-10-10</a></li>
+<li><a href="#030--2018-01-29">0.3.0 / 2018-01-29</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
       <div class="native-inline">
         <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
       </div>
@@ -156,6 +186,10 @@ schema.plugin(mongooseLeanVirtuals);
 
 
       <h1 id="changelog">Changelog</h1>
+<h2 id="0-3-1-2018-10-10">0.3.1 / 2018-10-10</h2>
+<ul>
+<li>docs: link to new docs site on plugins.mongoosejs.io</li>
+</ul>
 <h2 id="0-3-0-2018-01-29">0.3.0 / 2018-01-29</h2>
 <ul>
 <li>fix: delay checking virtuals until the middleware for 5.0 support #6</li>

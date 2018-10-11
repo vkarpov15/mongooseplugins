@@ -80,7 +80,7 @@ module.exports = async (props) => {
     </script>
 
     <div class="content">
-      <div class="toc">
+      <div class="toc desktop">
         <h2><a href="/">Mongoose Plugins</a></h2>
         <div>
           ${select(props)}
@@ -90,7 +90,14 @@ module.exports = async (props) => {
           <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
         </div>
       </div>
-      <h1>${repo}</h1>
+      <h1 id="repo" class="desktop">${repo}</h1>
+      <div class="toc mobile">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          ${selectMobile(props)}
+        </div>
+        ${marked(_toc.content)}
+      </div>
       <div class="native-inline">
         <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
       </div>
@@ -130,4 +137,14 @@ function select(props) {
     }).join('\n') +
     '</div>' +
     '</div>';
+}
+
+function selectMobile(props) {
+  return '<select id="select-plugin-mobile" onchange="window.location.href = \'/plugins/\' + this.value">' +
+    pages.map(p => `
+      <option value="${p.props.path}" ${p.props.repo === props.repo ? 'selected' : ''}>
+        ${p.props.repo}
+      </option>
+    `).join('\n') +
+    '</select>';
 }
