@@ -7,4 +7,8 @@ module.exports = [
     file: './plugins/lean-virtuals.html',
     props: { owner: 'vkarpov15', repo: 'mongoose-lean-virtuals', path: 'lean-virtuals' }
   },
+  {
+    file: './plugins/int32.html',
+    props: { owner: 'vkarpov15', repo: 'mongoose-int32', path: 'int32' }
+  }
 ];

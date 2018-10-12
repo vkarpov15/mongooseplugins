@@ -1,0 +1,218 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Mongoose Plugins Search</title>
+    <link rel="stylesheet" href="/public/style.css">
+
+    <script type="text/javascript">
+      !function(name,path,ctx){
+        var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
+      }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js',this);
+
+      KeenAsync.ready(function(){
+        var client = new KeenAsync({
+          projectId: '5ac79d81c9e77c0001a02e1d',
+          writeKey: '3A2D0DE1DA53EAE8EDB843737C817C0285F1D7DECEE598E50D42D2F2D3213484D7A1303570E2F989EE0C3DAE48A5FFD967F70561E9B41B04B011AA5B1D8CA20FA0E0450B16F2DBC6E7C31465DE4C78F606ADAAD6365AC462EA549CF8BE2E7119'
+        });
+
+        // Record an event
+        client.recordEvent('pageviews', {
+          url: window.location.pathname
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      
+    <script type="text/javascript" src="/public/native.js"></script>
+    <link rel="stylesheet" href="/public/inlinecpc.css">
+    <link rel="stylesheet" href="/public/highlight.css">
+    <link rel="stylesheet" href="/public/plugin.css">
+    <style>
+      a, a:visited {
+        color: #0366d6;
+      }
+    </style>
+
+    <script>
+      _native.init("CK7DT53Y",{
+        targetClass: 'native-inline'
+      });
+    </script>
+
+    <div class="content">
+      <div class="toc desktop">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <div id="select-plugin"><a class="select-plugin-this-repo" href="./int32">mongoose-int32</a> <span class="right-arrow"></span><div id="select-plugin-hidden"><a href="./autopopulate">mongoose-autopopulate</a>
+<a href="./lean-virtuals">mongoose-lean-virtuals</a></div></div>
+        </div>
+        <ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#api">API</a><ul>
+<li><a href="#it-casts-to-int-using-mathround">It casts to int using <code>Math.round()</code></a></li>
+<li><a href="#it-throws-a-casterror-if-outside-allowed-range">It throws a CastError if outside allowed range</a></li>
+<li><a href="#it-throws-a-casterror-if-not-a-number">It throws a CastError if not a number</a></li>
+<li><a href="#it-works-with-required-validators">It works with required validators</a></li>
+<li><a href="#it-works-with-queries">It works with queries</a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#030--2018-04-30">0.3.0 / 2018-04-30</a></li>
+<li><a href="#020--2016-11-13">0.2.0 / 2016-11-13</a></li>
+</ul>
+</li>
+</ul>
+
+        <div id="carbonads-wrapper">
+          <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
+        </div>
+      </div>
+      <h1 id="repo" class="desktop">mongoose-int32</h1>
+      <div class="toc mobile">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <select id="select-plugin-mobile" onchange="window.location.href = '/plugins/' + this.value">
+      <option value="autopopulate" >
+        mongoose-autopopulate
+      </option>
+    
+
+      <option value="lean-virtuals" >
+        mongoose-lean-virtuals
+      </option>
+    
+
+      <option value="int32" selected>
+        mongoose-int32
+      </option>
+    </select>
+        </div>
+        <ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#api">API</a><ul>
+<li><a href="#it-casts-to-int-using-mathround">It casts to int using <code>Math.round()</code></a></li>
+<li><a href="#it-throws-a-casterror-if-outside-allowed-range">It throws a CastError if outside allowed range</a></li>
+<li><a href="#it-throws-a-casterror-if-not-a-number">It throws a CastError if not a number</a></li>
+<li><a href="#it-works-with-required-validators">It works with required validators</a></li>
+<li><a href="#it-works-with-queries">It works with queries</a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#030--2018-04-30">0.3.0 / 2018-04-30</a></li>
+<li><a href="#020--2016-11-13">0.2.0 / 2016-11-13</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      <h1 id="usage">Usage</h1>
+<p>Requires <code>mongoose &gt;= 4.4.0</code>. Do not use with mongoose 3.x.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> Int32 = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-int32'</span>);</code></pre>
+
+
+      <h1 id="api">API</h1>
+
+
+<h2 id="it-casts-to-int-using-math-round-">It casts to int using <code>Math.round()</code></h2>
+<p>If you declare a field of type <code>Int32</code>, this module will use
+<code>Math.round()</code> to convert it to an integer so MongoDB can store it
+properly.</p>
+<pre><code class="language-javascript">
+    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+      <span class="hljs-attr">test</span>: Int32
+    });
+    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>, schema);
+
+    Test.create({ <span class="hljs-attr">test</span>: <span class="hljs-number">1.49</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+      assert.equal(doc.test, <span class="hljs-number">1</span>);
+      <span class="hljs-comment">// Int32.INT32_BSON_TYPE=16, see http://bsonspec.org/spec.html</span>
+      <span class="hljs-keyword">const</span> query = { <span class="hljs-attr">test</span>: { <span class="hljs-attr">$type</span>: Int32.INT32_BSON_TYPE, <span class="hljs-attr">$eq</span>: <span class="hljs-number">1</span> } };
+      db.collection(<span class="hljs-string">'tests'</span>).findOne(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+        assert.ifError(error);
+        assert.ok(doc);
+      });
+    });
+</code></pre>
+
+
+<h2 id="it-throws-a-casterror-if-outside-allowed-range">It throws a CastError if outside allowed range</h2>
+<p>MongoDB int32&#39;s must be between -2147483648 and 2147483647. If the
+rounded value is outside of this range, that&#39;s a CastError.</p>
+<pre><code class="language-javascript">
+    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
+    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
+    doc.test = <span class="hljs-number">0x7FFFFFFF</span> + <span class="hljs-number">1</span>;
+    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
+      <span class="hljs-string">'Cast to Int32 failed for value "2147483648" at path "test"'</span>);
+</code></pre>
+
+
+<h2 id="it-throws-a-casterror-if-not-a-number">It throws a CastError if not a number</h2>
+<p>If the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number"><code>Number</code> constructor</a>
+doesn&#39;t recognize the value as a valid number, that&#39;s a
+<a href="http://mongoosejs.com/docs/api.html#error-js">CastError</a>.</p>
+<pre><code class="language-javascript">
+    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
+    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
+    doc.test = <span class="hljs-string">'NaN'</span>;
+    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
+      <span class="hljs-string">'Cast to Int32 failed for value "NaN" at path "test"'</span>);
+</code></pre>
+
+
+<h2 id="it-works-with-required-validators">It works with required validators</h2>
+<pre><code class="language-javascript">
+    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+      <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
+    });
+    <span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>, schema);
+    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Bacon();
+    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].name, <span class="hljs-string">'ValidatorError'</span>);
+    assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].message,
+      <span class="hljs-string">'Path `strips` is required.'</span>);
+</code></pre>
+
+
+<h2 id="it-works-with-queries">It works with queries</h2>
+<pre><code class="language-javascript">
+    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+      <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
+    });
+    <span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>);
+    Bacon.create({ <span class="hljs-attr">strips</span>: <span class="hljs-number">4</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+      assert.ifError(error);
+      Bacon.findOne({ <span class="hljs-attr">strips</span>: { <span class="hljs-attr">$gt</span>: <span class="hljs-number">2</span> } }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, bacon</span>) </span>{
+        assert.ifError(error);
+        assert.equal(bacon.strips, <span class="hljs-number">4</span>);
+      });
+    });
+</code></pre>
+
+
+      <h1 id="changelog">Changelog</h1>
+<h2 id="0-3-0-2018-04-30">0.3.0 / 2018-04-30</h2>
+<ul>
+<li>feat: add support for Mongoose 5</li>
+</ul>
+<h2 id="0-2-0-2016-11-13">0.2.0 / 2016-11-13</h2>
+<ul>
+<li>feat: support query conditionals</li>
+</ul>
+
+    </div>
+  
+    </div>
+  </body>
+</html>
