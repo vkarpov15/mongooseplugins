@@ -10,5 +10,9 @@ module.exports = [
   {
     file: './plugins/int32.html',
     props: { owner: 'vkarpov15', repo: 'mongoose-int32', path: 'int32' }
+  },
+  {
+    file: './plugins/double.html',
+    props: { owner: 'mongoosejs', repo: 'mongoose-double', path: 'double' }
   }
 ];
