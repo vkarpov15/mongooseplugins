@@ -60,10 +60,12 @@
 <li><a href="#it-can-specify-a-function-that-returns-options">It can specify a function that returns options</a></li>
 <li><a href="#it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</a></li>
 <li><a href="#it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</a></li>
+<li><a href="#it-with-lean">It with <code>lean()</code></a></li>
 <li><a href="#it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#090--2018-11-08">0.9.0 / 2018-11-08</a></li>
 <li><a href="#082--2018-10-10">0.8.2 / 2018-10-10</a></li>
 <li><a href="#081--2018-09-02">0.8.1 / 2018-09-02</a></li>
 <li><a href="#080--2018-07-01">0.8.0 / 2018-07-01</a></li>
@@ -114,10 +116,12 @@
 <li><a href="#it-can-specify-a-function-that-returns-options">It can specify a function that returns options</a></li>
 <li><a href="#it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</a></li>
 <li><a href="#it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</a></li>
+<li><a href="#it-with-lean">It with <code>lean()</code></a></li>
 <li><a href="#it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#090--2018-11-08">0.9.0 / 2018-11-08</a></li>
 <li><a href="#082--2018-10-10">0.8.2 / 2018-10-10</a></li>
 <li><a href="#081--2018-09-02">0.8.1 / 2018-09-02</a></li>
 <li><a href="#080--2018-07-01">0.8.0 / 2018-07-01</a></li>
@@ -318,6 +322,22 @@ userSchema.plugin(autopopulate);
 });</code></pre>
 
 
+<h2 id="it-with-lean-">It with <code>lean()</code></h2>
+<p>Setting the <a href="https://mongoosejs.com/docs/api.html#query_Query-lean">Mongoose <code>lean</code> option</a>
+will disable autopopulate for all paths, <em>unless</em> you add <code>autopulate: true</code>
+to your <code>lean</code> option.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// acquit:ignore:start</span>
+<span class="hljs-keyword">return</span> co(<span class="hljs-function"><span class="hljs-keyword">function</span>*(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// acquit:ignore:end</span>
+  <span class="hljs-keyword">let</span> band = <span class="hljs-keyword">yield</span> Band.findOne().lean();
+  <span class="hljs-comment">// Won't autopopulate because `lean()` is set</span>
+  assert.ok(band.lead <span class="hljs-keyword">instanceof</span> mongoose.Types.ObjectId);
+
+  <span class="hljs-comment">// To turn on `autopopulate` with lean, use `lean({ autopulate: true })`</span>
+  band = <span class="hljs-keyword">yield</span> Band.findOne().lean({ <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> });
+  assert.equal(band.lead.name, <span class="hljs-string">'Axl Rose'</span>);</code></pre>
+
+
 <h2 id="it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></h2>
 <p>Recursive populate can lead to messy infinite recursion, so this plugin
 supports a <code>maxDepth</code> option that limits how deep recursive population
@@ -356,6 +376,10 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
 
 
       <h1 id="changelog">Changelog</h1>
+<h2 id="0-9-0-2018-11-08">0.9.0 / 2018-11-08</h2>
+<ul>
+<li>feat: support turning on autopopulate with lean #48 #27 #14</li>
+</ul>
 <h2 id="0-8-2-2018-10-10">0.8.2 / 2018-10-10</h2>
 <ul>
 <li>docs: link to new plugins site on plugins.mongoosejs.io</li>
