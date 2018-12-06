@@ -1,0 +1,189 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Mongoose Plugins Search</title>
+    <link rel="stylesheet" href="/public/style.css">
+
+    <script type="text/javascript">
+      !function(name,path,ctx){
+        var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
+      }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js',this);
+
+      KeenAsync.ready(function(){
+        var client = new KeenAsync({
+          projectId: '5ac79d81c9e77c0001a02e1d',
+          writeKey: '3A2D0DE1DA53EAE8EDB843737C817C0285F1D7DECEE598E50D42D2F2D3213484D7A1303570E2F989EE0C3DAE48A5FFD967F70561E9B41B04B011AA5B1D8CA20FA0E0450B16F2DBC6E7C31465DE4C78F606ADAAD6365AC462EA549CF8BE2E7119'
+        });
+
+        // Record an event
+        client.recordEvent('pageviews', {
+          url: window.location.pathname
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      
+    <script type="text/javascript" src="/public/native.js"></script>
+    <link rel="stylesheet" href="/public/inlinecpc.css">
+    <link rel="stylesheet" href="/public/highlight.css">
+    <link rel="stylesheet" href="/public/plugin.css">
+    <style>
+      a, a:visited {
+        color: #0366d6;
+      }
+    </style>
+
+    <script>
+      _native.init("CK7DT53Y",{
+        targetClass: 'native-inline'
+      });
+    </script>
+
+    <div class="content">
+      <div class="toc desktop">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <div id="select-plugin"><a class="select-plugin-this-repo" href="./update-versioning">mongoose-update-versioning</a> <span class="right-arrow"></span><div id="select-plugin-hidden"><a href="./autopopulate">mongoose-autopopulate</a>
+<a href="./lean-virtuals">mongoose-lean-virtuals</a>
+<a href="./int32">mongoose-int32</a>
+<a href="./double">mongoose-double</a></div></div>
+        </div>
+        <ul>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#increments-version-on-updates">Increments version on updates</a></li>
+<li><a href="#only-increments-when-updating-an-array">Only increments when updating an array</a></li>
+<li><a href="#strips-out-version-key-overwrites">Strips out version key overwrites</a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#010--2018-12-06">0.1.0 / 2018-12-06</a></li>
+</ul>
+</li>
+</ul>
+
+        <div id="carbonads-wrapper">
+          <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
+        </div>
+      </div>
+      <h1 id="repo" class="desktop">mongoose-update-versioning</h1>
+      <div class="toc mobile">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <select id="select-plugin-mobile" onchange="window.location.href = '/plugins/' + this.value">
+      <option value="autopopulate" >
+        mongoose-autopopulate
+      </option>
+    
+
+      <option value="lean-virtuals" >
+        mongoose-lean-virtuals
+      </option>
+    
+
+      <option value="int32" >
+        mongoose-int32
+      </option>
+    
+
+      <option value="double" >
+        mongoose-double
+      </option>
+    
+
+      <option value="update-versioning" selected>
+        mongoose-update-versioning
+      </option>
+    </select>
+        </div>
+        <ul>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#increments-version-on-updates">Increments version on updates</a></li>
+<li><a href="#only-increments-when-updating-an-array">Only increments when updating an array</a></li>
+<li><a href="#strips-out-version-key-overwrites">Strips out version key overwrites</a></li>
+</ul>
+</li>
+<li><a href="#changelog">Changelog</a><ul>
+<li><a href="#010--2018-12-06">0.1.0 / 2018-12-06</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      
+
+      
+
+<h1 id="examples">Examples</h1>
+
+
+<h2 id="increments-version-on-updates">Increments version on updates</h2>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">colors</span>: [{ <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span> }]
+});
+
+<span class="hljs-comment">// Add this plugin</span>
+schema.plugin(updateVersioningPlugin);
+
+<span class="hljs-keyword">const</span> Model = mongoose.model(<span class="hljs-string">'Toy'</span>, schema);
+
+<span class="hljs-comment">// Create a doc that we'll update later. Starts with version 0...</span>
+<span class="hljs-keyword">let</span> doc = <span class="hljs-keyword">yield</span> Model.create({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'Turbo Man'</span>,
+  <span class="hljs-attr">colors</span>: [{ <span class="hljs-attr">name</span>: <span class="hljs-string">'red'</span> }]
+});
+assert.equal(doc.__v, <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// This plugin will increment the document version</span>
+doc = <span class="hljs-keyword">yield</span> Model.findOneAndUpdate(
+  {},
+  { <span class="hljs-attr">$push</span>: { <span class="hljs-attr">colors</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'gold'</span> } } },
+  { <span class="hljs-attr">new</span>: <span class="hljs-literal">true</span> }
+);
+assert.equal(doc.__v, <span class="hljs-number">1</span>);</code></pre>
+
+
+<h2 id="only-increments-when-updating-an-array">Only increments when updating an array</h2>
+<p><a href="https://mongoosejs.com/docs/guide.html#versionKey">Mongoose versioning</a>
+only triggers a version bump when you modify an array. That&#39;s because the
+primary purpose of versioning is to protect you from, for example,
+<a href="http://aaronheckmann.blogspot.com/2012/06/mongoose-v3-part-1-versioning.html">overwriting the 3rd element in an array when someone deleted the 3rd element underneath you</a>.
+Updating just the <code>name</code> will <strong>not</strong> trigger a version bump.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> doc = <span class="hljs-keyword">yield</span> Model.findOneAndUpdate({}, { <span class="hljs-attr">name</span>: <span class="hljs-string">'Santa'</span> }, { <span class="hljs-attr">new</span>: <span class="hljs-literal">true</span> });
+assert.equal(doc.__v, <span class="hljs-number">0</span>); <span class="hljs-comment">// Did **not** bump the version</span></code></pre>
+
+
+<h2 id="strips-out-version-key-overwrites">Strips out version key overwrites</h2>
+<p>The update versioning plugin will strip out any existing modifications
+to the version key. If you want to explicitly overwrite the version key,
+you should pass <code>version: false</code> to your <a href="https://mongoosejs.com/docs/api.html#query_Query-setOptions">Mongoose query options</a>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> doc = <span class="hljs-keyword">yield</span> Model.findOneAndUpdate({}, { <span class="hljs-attr">__v</span>: <span class="hljs-number">1225</span> }, { <span class="hljs-attr">new</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-comment">// The update versioning plugin prevented overwriting `__v`</span>
+assert.equal(doc.__v, <span class="hljs-number">0</span>);
+
+doc = <span class="hljs-keyword">yield</span> Model.findOneAndUpdate({}, { <span class="hljs-attr">__v</span>: <span class="hljs-number">1225</span> }, {
+  <span class="hljs-attr">new</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">// Skip update versioning for this one update</span>
+});
+<span class="hljs-comment">// Overwrote the version key</span>
+assert.equal(doc.__v, <span class="hljs-number">1225</span>);</code></pre>
+
+
+      <h1 id="changelog">Changelog</h1>
+<h2 id="0-1-0-2018-12-06">0.1.0 / 2018-12-06</h2>
+<ul>
+<li>feat: initial release</li>
+</ul>
+
+    </div>
+  
+    </div>
+  </body>
+</html>

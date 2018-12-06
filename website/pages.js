@@ -14,5 +14,9 @@ module.exports = [
   {
     file: './plugins/double.html',
     props: { owner: 'mongoosejs', repo: 'mongoose-double', path: 'double' }
+  },
+  {
+    file: './plugins/update-versioning.html',
+    props: { owner: 'mongoosejs', repo: 'mongoose-update-versioning', path: 'update-versioning' }
   }
 ];
