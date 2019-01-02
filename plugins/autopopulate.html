@@ -57,6 +57,7 @@
 <li><a href="#mongoose-autopopulate-plugin">mongoose-autopopulate plugin</a><ul>
 <li><a href="#it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</a></li>
 <li><a href="#it-supports-document-arrays">It supports document arrays</a></li>
+<li><a href="#it-has-a-couple-caveats-with-projections">It has a couple caveats with projections</a></li>
 <li><a href="#it-can-specify-an-options-argument">It can specify an options argument</a></li>
 <li><a href="#it-can-specify-a-function-that-returns-options">It can specify a function that returns options</a></li>
 <li><a href="#it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</a></li>
@@ -66,6 +67,7 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#091--2019-01-02">0.9.1 / 2019-01-02</a></li>
 <li><a href="#090--2018-11-08">0.9.0 / 2018-11-08</a></li>
 <li><a href="#082--2018-10-10">0.8.2 / 2018-10-10</a></li>
 <li><a href="#081--2018-09-02">0.8.1 / 2018-09-02</a></li>
@@ -118,6 +120,7 @@
 <li><a href="#mongoose-autopopulate-plugin">mongoose-autopopulate plugin</a><ul>
 <li><a href="#it-supports-an-autopopulate-option-in-schemas">It supports an autopopulate option in schemas</a></li>
 <li><a href="#it-supports-document-arrays">It supports document arrays</a></li>
+<li><a href="#it-has-a-couple-caveats-with-projections">It has a couple caveats with projections</a></li>
 <li><a href="#it-can-specify-an-options-argument">It can specify an options argument</a></li>
 <li><a href="#it-can-specify-a-function-that-returns-options">It can specify a function that returns options</a></li>
 <li><a href="#it-can-disable-autopopulate-for-individual-queries">It can disable autopopulate for individual queries</a></li>
@@ -127,6 +130,7 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#091--2019-01-02">0.9.1 / 2019-01-02</a></li>
 <li><a href="#090--2018-11-08">0.9.0 / 2018-11-08</a></li>
 <li><a href="#082--2018-10-10">0.8.2 / 2018-10-10</a></li>
 <li><a href="#081--2018-09-02">0.8.1 / 2018-09-02</a></li>
@@ -216,6 +220,29 @@ Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"G
   assert.equal(<span class="hljs-string">'William Bruce Rose, Jr.'</span>, doc.members[<span class="hljs-number">0</span>].birthName);
   done();
 });</code></pre>
+
+
+<h2 id="it-has-a-couple-caveats-with-projections">It has a couple caveats with projections</h2>
+<p>By default, Mongoose 5.x automatically projects in populated properties.
+That means you need a little extra work to exclude autopopulated fields.
+Either explicitly <a href="https://mongoosejs.com/docs/api.html#query_Query-select">deselect the path</a>
+in your projection, or set the <a href="https://mongoosejs.com/docs/guide.html#selectPopulatedPaths"><code>selectPopulatedPaths</code> schema option</a>
+to <code>false</code>.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Mongoose adds `members: 1` and `lead: 1` to the projection</span>
+<span class="hljs-keyword">let</span> band = <span class="hljs-keyword">yield</span> Band.findOne().select({ <span class="hljs-attr">name</span>: <span class="hljs-number">1</span> });
+assert.equal(band.members[<span class="hljs-number">0</span>].name, <span class="hljs-string">'Axl Rose'</span>);
+assert.equal(band.lead.name, <span class="hljs-string">'Axl Rose'</span>);
+
+<span class="hljs-comment">// You can also tell Mongoose to not project in populated paths by default</span>
+<span class="hljs-comment">// using the `selectPopulatedPaths` schema option.</span>
+<span class="hljs-keyword">const</span> newSchema = Band.schema.clone();
+
+newSchema.options.selectPopulatedPaths = <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">let</span> Band2 = mongoose.model(<span class="hljs-string">'Band2'</span>, newSchema, <span class="hljs-string">'bands'</span>);
+
+band = <span class="hljs-keyword">yield</span> Band2.findOne().select({ <span class="hljs-attr">name</span>: <span class="hljs-number">1</span> });
+assert.ok(!band.members);
+assert.ok(!band.lead);</code></pre>
 
 
 <h2 id="it-can-specify-an-options-argument">It can specify an options argument</h2>
@@ -382,6 +409,10 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
 
 
       <h1 id="changelog">Changelog</h1>
+<h2 id="0-9-1-2019-01-02">0.9.1 / 2019-01-02</h2>
+<ul>
+<li>docs: add note about selectPopulatedPaths option #50</li>
+</ul>
 <h2 id="0-9-0-2018-11-08">0.9.0 / 2018-11-08</h2>
 <ul>
 <li>feat: support turning on autopopulate with lean #48 #27 #14</li>
