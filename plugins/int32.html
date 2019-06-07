@@ -7,21 +7,15 @@
     <link rel="stylesheet" href="/public/style.css">
 
     <script type="text/javascript">
-      !function(name,path,ctx){
-        var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
-      }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js',this);
-
-      KeenAsync.ready(function(){
-        var client = new KeenAsync({
-          projectId: '5ac79d81c9e77c0001a02e1d',
-          writeKey: '3A2D0DE1DA53EAE8EDB843737C817C0285F1D7DECEE598E50D42D2F2D3213484D7A1303570E2F989EE0C3DAE48A5FFD967F70561E9B41B04B011AA5B1D8CA20FA0E0450B16F2DBC6E7C31465DE4C78F606ADAAD6365AC462EA549CF8BE2E7119'
-        });
-
-        // Record an event
-        client.recordEvent('pageviews', {
-          url: window.location.pathname
-        });
-      });
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://g0a3nbw0xa.execute-api.us-east-1.amazonaws.com/prod/track', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {};
+      xhr.send(JSON.stringify({
+        path: window.location.pathname,
+        hostname: window.location.hostname,
+        hash: window.location.hash
+      }));
     </script>
   </head>
   <body>
@@ -134,7 +128,7 @@
       <h1 id="api">API</h1>
 
 
-<h2 id="it-casts-to-int-using-math-round-">It casts to int using <code>Math.round()</code></h2>
+<h2 id="it-casts-to-int-using-mathround">It casts to int using <code>Math.round()</code></h2>
 <p>If you declare a field of type <code>Int32</code>, this module will use
 <code>Math.round()</code> to convert it to an integer so MongoDB can store it
 properly.</p>
@@ -216,16 +210,16 @@ doesn&#39;t recognize the value as a valid number, that&#39;s a
 
 
       <h1 id="changelog">Changelog</h1>
-<h2 id="0-3-1-2018-10-12">0.3.1 / 2018-10-12</h2>
+<h2 id="031--2018-10-12">0.3.1 / 2018-10-12</h2>
 <ul>
 <li>docs: add link to homepage on plugins.mongoosejs.io</li>
 <li>docs: add changelog</li>
 </ul>
-<h2 id="0-3-0-2018-04-30">0.3.0 / 2018-04-30</h2>
+<h2 id="030--2018-04-30">0.3.0 / 2018-04-30</h2>
 <ul>
 <li>feat: add support for Mongoose 5</li>
 </ul>
-<h2 id="0-2-0-2016-11-13">0.2.0 / 2016-11-13</h2>
+<h2 id="020--2016-11-13">0.2.0 / 2016-11-13</h2>
 <ul>
 <li>feat: support query conditionals</li>
 </ul>

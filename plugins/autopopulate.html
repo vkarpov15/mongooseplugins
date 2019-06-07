@@ -7,21 +7,15 @@
     <link rel="stylesheet" href="/public/style.css">
 
     <script type="text/javascript">
-      !function(name,path,ctx){
-        var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
-      }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js',this);
-
-      KeenAsync.ready(function(){
-        var client = new KeenAsync({
-          projectId: '5ac79d81c9e77c0001a02e1d',
-          writeKey: '3A2D0DE1DA53EAE8EDB843737C817C0285F1D7DECEE598E50D42D2F2D3213484D7A1303570E2F989EE0C3DAE48A5FFD967F70561E9B41B04B011AA5B1D8CA20FA0E0450B16F2DBC6E7C31465DE4C78F606ADAAD6365AC462EA549CF8BE2E7119'
-        });
-
-        // Record an event
-        client.recordEvent('pageviews', {
-          url: window.location.pathname
-        });
-      });
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://g0a3nbw0xa.execute-api.us-east-1.amazonaws.com/prod/track', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {};
+      xhr.send(JSON.stringify({
+        path: window.location.pathname,
+        hostname: window.location.hostname,
+        hash: window.location.hash
+      }));
     </script>
   </head>
   <body>
@@ -409,46 +403,46 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
 
 
       <h1 id="changelog">Changelog</h1>
-<h2 id="0-9-1-2019-01-02">0.9.1 / 2019-01-02</h2>
+<h2 id="091--2019-01-02">0.9.1 / 2019-01-02</h2>
 <ul>
 <li>docs: add note about selectPopulatedPaths option #50</li>
 </ul>
-<h2 id="0-9-0-2018-11-08">0.9.0 / 2018-11-08</h2>
+<h2 id="090--2018-11-08">0.9.0 / 2018-11-08</h2>
 <ul>
 <li>feat: support turning on autopopulate with lean #48 #27 #14</li>
 </ul>
-<h2 id="0-8-2-2018-10-10">0.8.2 / 2018-10-10</h2>
+<h2 id="082--2018-10-10">0.8.2 / 2018-10-10</h2>
 <ul>
 <li>docs: link to new plugins site on plugins.mongoosejs.io</li>
 </ul>
-<h2 id="0-8-1-2018-09-02">0.8.1 / 2018-09-02</h2>
+<h2 id="081--2018-09-02">0.8.1 / 2018-09-02</h2>
 <ul>
 <li>fix: call function with options and include refPath in options #15</li>
 </ul>
-<h2 id="0-8-0-2018-07-01">0.8.0 / 2018-07-01</h2>
+<h2 id="080--2018-07-01">0.8.0 / 2018-07-01</h2>
 <ul>
 <li>fix: add support for findOneAndUpdate() with autopopulate #42</li>
 </ul>
-<h2 id="0-7-0-2018-05-10">0.7.0 / 2018-05-10</h2>
+<h2 id="070--2018-05-10">0.7.0 / 2018-05-10</h2>
 <ul>
 <li>BREAKING CHANGE: drop support for Node.js &lt; 4.0.0</li>
 <li>feat: add <code>maxDepth</code> option, set to 10 by default #37 #20 #11</li>
 </ul>
-<h2 id="0-5-0-2016-11-29">0.5.0 / 2016-11-29</h2>
+<h2 id="050--2016-11-29">0.5.0 / 2016-11-29</h2>
 <ul>
 <li>feat: support lean #27 #14 <a href="https://github.com/siboulet">siboulet</a></li>
 <li>feat: support virtual autopopulate #24 <a href="https://github.com/siboulet">siboulet</a></li>
 </ul>
-<h2 id="0-4-0-2015-09-03">0.4.0 / 2015-09-03</h2>
+<h2 id="040--2015-09-03">0.4.0 / 2015-09-03</h2>
 <ul>
 <li>added; support for arrays #9 <a href="https://github.com/rerthal">rerthal</a></li>
 </ul>
-<h2 id="0-3-0-2015-07-30">0.3.0 / 2015-07-30</h2>
+<h2 id="030--2015-07-30">0.3.0 / 2015-07-30</h2>
 <ul>
 <li>added; support of autopopulate in nested schemas #5 <a href="https://github.com/eloytoro">eloytoro</a></li>
 <li>fixed; changed mongoose peer dependency to 4.x #4</li>
 </ul>
-<h2 id="0-2-0-2015-06-27">0.2.0 / 2015-06-27</h2>
+<h2 id="020--2015-06-27">0.2.0 / 2015-06-27</h2>
 <ul>
 <li>added; support for nested schemas #3 <a href="https://github.com/siboulet">siboulet</a></li>
 </ul>
