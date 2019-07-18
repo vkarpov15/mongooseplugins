@@ -34,7 +34,13 @@ module.exports = async (props) => {
       return txt;
     }).
     then(res => splitIntoParagraphs(res)).
-    then(examples => examples.map(p => marked(p)));
+    then(examples => examples.map(p => marked(p))).
+    catch(error => {
+      if (error.status === 404) {
+        return [];
+      }
+      throw error;
+    });
 
   let changelog = null;
   for (const file of ['History.md', 'CHANGELOG.md']) {

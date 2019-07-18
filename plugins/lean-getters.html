@@ -1,0 +1,141 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Mongoose Plugins Search</title>
+    <link rel="stylesheet" href="/public/style.css">
+
+    <script type="text/javascript">
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://g0a3nbw0xa.execute-api.us-east-1.amazonaws.com/prod/track', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {};
+      xhr.send(JSON.stringify({
+        path: window.location.pathname,
+        hostname: window.location.hostname,
+        hash: window.location.hash
+      }));
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      
+    <script type="text/javascript" src="/public/native.js"></script>
+    <link rel="stylesheet" href="/public/inlinecpc.css">
+    <link rel="stylesheet" href="/public/highlight.css">
+    <link rel="stylesheet" href="/public/plugin.css">
+    <style>
+      a, a:visited {
+        color: #0366d6;
+      }
+    </style>
+
+    <script>
+      _native.init("CK7DT53Y",{
+        targetClass: 'native-inline'
+      });
+    </script>
+
+    <div class="content">
+      <div class="toc desktop">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <div id="select-plugin"><a class="select-plugin-this-repo" href="./lean-getters">mongoose-lean-getters</a> <span class="right-arrow"></span><div id="select-plugin-hidden"><a href="./autopopulate">mongoose-autopopulate</a>
+<a href="./lean-virtuals">mongoose-lean-virtuals</a>
+<a href="./int32">mongoose-int32</a>
+<a href="./double">mongoose-double</a>
+<a href="./update-versioning">mongoose-update-versioning</a></div></div>
+        </div>
+        <ul>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+</li>
+<li><a href="#011--2019-07-18">0.1.1 / 2019-07-18</a></li>
+</ul>
+
+        <div id="carbonads-wrapper">
+          <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DT537&placement=mongoosejsio" id="_carbonads_js"></script>
+        </div>
+      </div>
+      <h1 id="repo" class="desktop">mongoose-lean-getters</h1>
+      <div class="toc mobile">
+        <h2><a href="/">Mongoose Plugins</a></h2>
+        <div>
+          <select id="select-plugin-mobile" onchange="window.location.href = '/plugins/' + this.value">
+      <option value="autopopulate" >
+        mongoose-autopopulate
+      </option>
+    
+
+      <option value="lean-virtuals" >
+        mongoose-lean-virtuals
+      </option>
+    
+
+      <option value="int32" >
+        mongoose-int32
+      </option>
+    
+
+      <option value="double" >
+        mongoose-double
+      </option>
+    
+
+      <option value="update-versioning" >
+        mongoose-update-versioning
+      </option>
+    
+
+      <option value="lean-getters" selected>
+        mongoose-lean-getters
+      </option>
+    </select>
+        </div>
+        <ul>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+</li>
+<li><a href="#011--2019-07-18">0.1.1 / 2019-07-18</a></li>
+</ul>
+
+      </div>
+      <div class="native-inline">
+        <a href="#native_link#"><span class="sponsor">Sponsor</span> #native_company# — #native_desc#</a>
+      </div>
+      <h2 id="usage">Usage</h2>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
+<span class="hljs-keyword">const</span> mongooseLeanGetters = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-lean-getters'</span>);
+
+<span class="hljs-keyword">const</span> schema = mongoose.Schema({
+  <span class="hljs-attr">name</span>: {
+    <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-comment">// Get the last 6 characters of the string</span>
+    get: <span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v.slice(<span class="hljs-number">-6</span>)
+  }
+});
+<span class="hljs-comment">// Add this plugin to apply getters when using `lean()`.</span>
+schema.plugin(mongooseLeanGetters);
+
+<span class="hljs-keyword">await</span> Model.create({ <span class="hljs-attr">name</span>: <span class="hljs-string">'Captain Jean-Luc Picard'</span> });
+
+<span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">await</span> Model.findOne().lean({ <span class="hljs-attr">getters</span>: <span class="hljs-literal">true</span> });
+doc.name; <span class="hljs-comment">// 'Picard'</span></code></pre>
+
+
+      
+
+      <h1 id="changelog">Changelog</h1>
+<h2 id="011--2019-07-18">0.1.1 / 2019-07-18</h2>
+<ul>
+<li>docs: add example to README</li>
+</ul>
+
+    </div>
+  
+    </div>
+  </body>
+</html>

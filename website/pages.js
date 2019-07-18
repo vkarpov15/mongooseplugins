@@ -18,5 +18,9 @@ module.exports = [
   {
     file: './plugins/update-versioning.html',
     props: { owner: 'mongoosejs', repo: 'mongoose-update-versioning', path: 'update-versioning' }
+  },
+  {
+    file: './plugins/lean-getters.html',
+    props: { owner: 'mongoosejs', repo: 'mongoose-lean-getters', path: 'lean-getters' }
   }
 ];
