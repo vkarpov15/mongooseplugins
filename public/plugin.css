@@ -1,5 +1,6 @@
 .content {
   position: relative;
+  margin-left:30px;
 }
 
 .toc {
@@ -9,7 +10,7 @@
 .toc.desktop {
   position: fixed;
   left: 0px;
-  width: 350px;
+  width: 15%;
 }
 
 .toc ul {
