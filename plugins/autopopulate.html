@@ -62,6 +62,8 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#0122--2020-04-19">0.12.2 / 2020-04-19</a></li>
+<li><a href="#0121--2020-03-29">0.12.1 / 2020-03-29</a></li>
 <li><a href="#0120--2020-02-05">0.12.0 / 2020-02-05</a></li>
 <li><a href="#0110--2020-01-24">0.11.0 / 2020-01-24</a></li>
 <li><a href="#0100--2019-12-20">0.10.0 / 2019-12-20</a></li>
@@ -133,6 +135,8 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#0122--2020-04-19">0.12.2 / 2020-04-19</a></li>
+<li><a href="#0121--2020-03-29">0.12.1 / 2020-03-29</a></li>
 <li><a href="#0120--2020-02-05">0.12.0 / 2020-02-05</a></li>
 <li><a href="#0110--2020-01-24">0.11.0 / 2020-01-24</a></li>
 <li><a href="#0100--2019-12-20">0.10.0 / 2019-12-20</a></li>
@@ -167,6 +171,14 @@ pass to <a href="https://mongoosejs.com/docs/api.html#schema_Schema-plugin">Mong
   }
 });
 schema.plugin(<span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-autopopulate'</span>));</code></pre>
+<p>Only apply this plugin to top-level schemas. Don&#39;t apply this plugin to child schemas.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Don't do `nestedSchema.plugin(require('mongoose-autopopulate'))`.</span>
+<span class="hljs-comment">// You only need to add mongoose-autopopulate to top-level schemas.</span>
+<span class="hljs-keyword">const</span> nestedSchema = mongoose.Schema({
+  <span class="hljs-attr">child</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">Number</span>, <span class="hljs-attr">ref</span>: <span class="hljs-string">'Child'</span>, <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> }
+});
+<span class="hljs-keyword">const</span> topSchema = mongoose.Schema({ <span class="hljs-attr">nested</span>: nestedSchema });
+topSchema.plugin(<span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-autopopulate'</span>));</code></pre>
 
 
       
@@ -415,6 +427,15 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
 
 
       <h1 id="changelog">Changelog</h1>
+<h2 id="0122--2020-04-19">0.12.2 / 2020-04-19</h2>
+<ul>
+<li>fix: avoid error in post(&#39;save&#39;) handler when this plugin is registered on a child schema #10</li>
+<li>docs: explain that this plugin should only be registered on top-level schemas</li>
+</ul>
+<h2 id="0121--2020-03-29">0.12.1 / 2020-03-29</h2>
+<ul>
+<li>fix: handle autopopulate within nested document array when top-level array is empty #70</li>
+</ul>
 <h2 id="0120--2020-02-05">0.12.0 / 2020-02-05</h2>
 <ul>
 <li>feat: autopopulate discriminators post <code>find()</code>, <code>findOne()</code>, and <code>findOneAndUpdate()</code> #26</li>
