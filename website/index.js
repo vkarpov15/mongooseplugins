@@ -19,6 +19,7 @@ const layout = content => `
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Mongoose Plugins Search</title>
     <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,700">
 
     <script type="text/javascript">
       var xhr = new XMLHttpRequest();
