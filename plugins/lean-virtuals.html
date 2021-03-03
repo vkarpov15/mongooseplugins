@@ -53,6 +53,7 @@
 <li><a href="#examples">examples</a><ul>
 <li><a href="#it-attaches-virtuals-to-result-of-find-findone-findbyid-findbyidandupdate-and-findoneandupdate-if-lean">It attaches virtuals to result of find, findOne, findById, findByIdAndUpdate, and findOneAndUpdate if lean</a></li>
 <li><a href="#it-lets-you-choose-which-virtuals-to-apply">It lets you choose which virtuals to apply</a></li>
+<li><a href="#it-lets-you-access-a-lean-subdocuments-parent">It lets you access a lean subdocument&#39;s parent</a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
@@ -133,6 +134,7 @@
 <li><a href="#examples">examples</a><ul>
 <li><a href="#it-attaches-virtuals-to-result-of-find-findone-findbyid-findbyidandupdate-and-findoneandupdate-if-lean">It attaches virtuals to result of find, findOne, findById, findByIdAndUpdate, and findOneAndUpdate if lean</a></li>
 <li><a href="#it-lets-you-choose-which-virtuals-to-apply">It lets you choose which virtuals to apply</a></li>
+<li><a href="#it-lets-you-access-a-lean-subdocuments-parent">It lets you access a lean subdocument&#39;s parent</a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
@@ -219,7 +221,9 @@ schema.plugin(mongooseLeanVirtuals);
     Model.findOneAndUpdate({}, { <span class="hljs-attr">name</span>: <span class="hljs-string">'VAL'</span> }).lean({ <span class="hljs-attr">virtuals</span>: <span class="hljs-literal">true</span> })
   ])).
   then(<span class="hljs-function"><span class="hljs-params">results</span> =&gt;</span> {
-    <span class="hljs-keyword">const</span> [findRes, findOneRes, findOneAndUpdateRes] = results;
+    <span class="hljs-keyword">const</span> findRes = results[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">const</span> findOneRes = results[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">const</span> findOneAndUpdateRes = results[<span class="hljs-number">2</span>];
     assert.equal(findRes[<span class="hljs-number">0</span>].lowercase, <span class="hljs-string">'val'</span>);
     assert.equal(findOneRes.lowercase, <span class="hljs-string">'val'</span>);
     assert.equal(findOneAndUpdateRes.lowercase, <span class="hljs-string">'val'</span>);
@@ -255,6 +259,43 @@ schema.plugin(mongooseLeanVirtuals);
   then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> {
     assert.equal(result.uppercase, <span class="hljs-string">'VAL'</span>);
     assert.ok(!result.lowercase);
+  });</code></pre>
+
+
+<h2 id="it-lets-you-access-a-lean-subdocuments-parent">It lets you access a lean subdocument&#39;s parent</h2>
+<p>Accessing the parent document is tricky because lean documents don&#39;t
+have a <code>parent()</code> method or any other Mongoose-specific functionality.
+To support that use case, this plugin exports a <code>parent()</code> function that
+lets you get a document&#39;s parent.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> childSchema = <span class="hljs-keyword">new</span> mongoose.Schema({ <span class="hljs-attr">firstName</span>: <span class="hljs-built_in">String</span> });
+childSchema.virtual(<span class="hljs-string">'fullName'</span>).get(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> mongoose.Document) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.firstName}</span> <span class="hljs-subst">${<span class="hljs-keyword">this</span>.parent().lastName}</span>`</span>;
+  }
+  <span class="hljs-comment">// This `fullName` virtual is in a subdocument, so in order to get the</span>
+  <span class="hljs-comment">// parent's `lastName` you need to use this plugin's `parent()` function.</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.firstName}</span> <span class="hljs-subst">${mongooseLeanVirtuals.parent(<span class="hljs-keyword">this</span>).lastName}</span>`</span>;
+});
+
+<span class="hljs-keyword">const</span> parentSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">firstName</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">lastName</span>: <span class="hljs-built_in">String</span>,
+  <span class="hljs-attr">child</span>: childSchema
+});
+
+parentSchema.plugin(mongooseLeanVirtuals);
+
+<span class="hljs-keyword">const</span> Parent = mongoose.model(<span class="hljs-string">'Parent'</span>, parentSchema);
+
+<span class="hljs-keyword">const</span> doc = {
+  <span class="hljs-attr">firstName</span>: <span class="hljs-string">'Anakin'</span>,
+  <span class="hljs-attr">lastName</span>: <span class="hljs-string">'Skywalker'</span>,
+  <span class="hljs-attr">child</span>: { <span class="hljs-attr">firstName</span>: <span class="hljs-string">'Luke'</span> }
+};
+<span class="hljs-keyword">return</span> Parent.create(doc).
+  then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> Parent.findOne().lean({ <span class="hljs-attr">virtuals</span>: <span class="hljs-literal">true</span> })).
+  then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> {
+    assert.equal(result.child.fullName, <span class="hljs-string">'Luke Skywalker'</span>);
   });</code></pre>
 
 
