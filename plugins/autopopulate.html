@@ -60,9 +60,12 @@
 <li><a href="#it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</a></li>
 <li><a href="#it-requires-an-option-to-work-with-lean">It requires an option to work with lean</a></li>
 <li><a href="#it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></a></li>
+<li><a href="#it-can-pass-a-list-or-regular-expression-of-functions-to-apply-hooks-to">It can pass a list or regular expression of functions to apply hooks to</a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#0140--2021-05-14">0.14.0 / 2021-05-14</a></li>
+<li><a href="#0130--2021-04-15">0.13.0 / 2021-04-15</a></li>
 <li><a href="#0122--2020-04-19">0.12.2 / 2020-04-19</a></li>
 <li><a href="#0121--2020-03-29">0.12.1 / 2020-03-29</a></li>
 <li><a href="#0120--2020-02-05">0.12.0 / 2020-02-05</a></li>
@@ -133,9 +136,12 @@
 <li><a href="#it-can-disable-autopopulate-in-populate-options">It can disable autopopulate in <code>populate()</code> options</a></li>
 <li><a href="#it-requires-an-option-to-work-with-lean">It requires an option to work with lean</a></li>
 <li><a href="#it-can-limit-the-depth-using-maxdepth">It can limit the depth using <code>maxDepth</code></a></li>
+<li><a href="#it-can-pass-a-list-or-regular-expression-of-functions-to-apply-hooks-to">It can pass a list or regular expression of functions to apply hooks to</a></li>
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#0140--2021-05-14">0.14.0 / 2021-05-14</a></li>
+<li><a href="#0130--2021-04-15">0.13.0 / 2021-04-15</a></li>
 <li><a href="#0122--2020-04-19">0.12.2 / 2020-04-19</a></li>
 <li><a href="#0121--2020-03-29">0.12.1 / 2020-03-29</a></li>
 <li><a href="#0120--2020-02-05">0.12.0 / 2020-02-05</a></li>
@@ -427,7 +433,44 @@ will go. The <code>maxDepth</code> option is 10 by default</p>
 });</code></pre>
 
 
+<h2 id="it-can-pass-a-list-or-regular-expression-of-functions-to-apply-hooks-to">It can pass a list or regular expression of functions to apply hooks to</h2>
+<p>By default, autopopulate applies to the results of <code>find()</code>, <code>findOne()</code>,
+<code>findOneAndUpdate()</code>, and <code>save()</code>. You can pick which functions
+you want autopopulate to handle using the <code>functions</code> option. For example,
+the below code disables autopopulating on <code>save()</code>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">return</span> co(<span class="hljs-function"><span class="hljs-keyword">function</span>*(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> bandSchema = <span class="hljs-keyword">new</span> Schema({
+    <span class="hljs-attr">name</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-attr">lead</span>: { <span class="hljs-attr">type</span>: ObjectId, <span class="hljs-attr">ref</span>: <span class="hljs-string">'people'</span>, <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">true</span> }
+  });
+  bandSchema.plugin(autopopulate, {
+    <span class="hljs-comment">// Apply this plugin to all functions except for `save()`</span>
+    functions: [<span class="hljs-string">'find'</span>, <span class="hljs-string">'findOne'</span>, <span class="hljs-string">'findOneAndUpdate'</span>]
+  });
+
+  <span class="hljs-keyword">const</span> Band = mongoose.model(<span class="hljs-string">'band8'</span>, bandSchema, <span class="hljs-string">'bands'</span>);
+
+  <span class="hljs-keyword">let</span> band = <span class="hljs-keyword">yield</span> Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> });
+  assert.ok(band.populated(<span class="hljs-string">'lead'</span>));
+
+  band = <span class="hljs-keyword">yield</span> Band.findOne({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Guns N' Roses"</span> }).setOptions({ <span class="hljs-attr">autopopulate</span>: <span class="hljs-literal">false</span> });
+  assert.ok(!band.populated(<span class="hljs-string">'lead'</span>));
+  <span class="hljs-comment">// `save()` doesn't autopopulate</span>
+  <span class="hljs-keyword">yield</span> band.save();
+  assert.ok(!band.populated(<span class="hljs-string">'lead'</span>));
+});</code></pre>
+
+
       <h1 id="changelog">Changelog</h1>
+<h2 id="0140--2021-05-14">0.14.0 / 2021-05-14</h2>
+<ul>
+<li>feat: add <code>functions</code> option to list out functions to register hooks on</li>
+</ul>
+<h2 id="0130--2021-04-15">0.13.0 / 2021-04-15</h2>
+<ul>
+<li>fix: autopopulate nested array fields containing embedded discriminator #82</li>
+<li>feat: autopopulate embedded discriminators #82</li>
+</ul>
 <h2 id="0122--2020-04-19">0.12.2 / 2020-04-19</h2>
 <ul>
 <li>fix: avoid error in post(&#39;save&#39;) handler when this plugin is registered on a child schema #10</li>
