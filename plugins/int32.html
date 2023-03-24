@@ -59,6 +59,8 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#060--2022-01-05">0.6.0 / 2022-01-05</a></li>
+<li><a href="#050--2021-05-14">0.5.0 / 2021-05-14</a></li>
 <li><a href="#041--2020-07-21">0.4.1 / 2020-07-21</a></li>
 <li><a href="#040--2020-06-25">0.4.0 / 2020-06-25</a></li>
 <li><a href="#031--2018-10-12">0.3.1 / 2018-10-12</a></li>
@@ -118,6 +120,8 @@
 </ul>
 </li>
 <li><a href="#changelog">Changelog</a><ul>
+<li><a href="#060--2022-01-05">0.6.0 / 2022-01-05</a></li>
+<li><a href="#050--2021-05-14">0.5.0 / 2021-05-14</a></li>
 <li><a href="#041--2020-07-21">0.4.1 / 2020-07-21</a></li>
 <li><a href="#040--2020-06-25">0.4.0 / 2020-06-25</a></li>
 <li><a href="#031--2018-10-12">0.3.1 / 2018-10-12</a></li>
@@ -133,7 +137,8 @@
       </div>
       <h1 id="usage">Usage</h1>
 <p>Requires <code>mongoose &gt;= 4.4.0</code>. Do not use with mongoose 3.x.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">var</span> Int32 = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose-int32'</span>);</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">"mongoose"</span>);
+<span class="hljs-keyword">const</span> Int32 = <span class="hljs-built_in">require</span>(<span class="hljs-string">"mongoose-int32"</span>).loadType(mongoose);</code></pre>
 
 
       <h1 id="api">API</h1>
@@ -143,84 +148,82 @@
 <p>If you declare a field of type <code>Int32</code>, this module will use
 <code>Math.round()</code> to convert it to an integer so MongoDB can store it
 properly.</p>
-<pre><code class="language-javascript">
-    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
-      <span class="hljs-attr">test</span>: Int32
-    });
-    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>, schema);
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">test</span>: Int32
+});
+<span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>, schema);
 
-    Test.create({ <span class="hljs-attr">test</span>: <span class="hljs-number">1.49</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
-      assert.equal(doc.test, <span class="hljs-number">1</span>);
-      <span class="hljs-comment">// Int32.INT32_BSON_TYPE=16, see http://bsonspec.org/spec.html</span>
-      <span class="hljs-keyword">const</span> query = { <span class="hljs-attr">test</span>: { <span class="hljs-attr">$type</span>: Int32.INT32_BSON_TYPE, <span class="hljs-attr">$eq</span>: <span class="hljs-number">1</span> } };
-      db.collection(<span class="hljs-string">'tests'</span>).findOne(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
-        assert.ifError(error);
-        assert.ok(doc);
-      });
-    });
-</code></pre>
+Test.create({ <span class="hljs-attr">test</span>: <span class="hljs-number">1.49</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+  assert.equal(doc.test, <span class="hljs-number">1</span>);
+  <span class="hljs-comment">// Int32.INT32_BSON_TYPE=16, see http://bsonspec.org/spec.html</span>
+  <span class="hljs-keyword">const</span> query = { <span class="hljs-attr">test</span>: { <span class="hljs-attr">$type</span>: Int32.INT32_BSON_TYPE, <span class="hljs-attr">$eq</span>: <span class="hljs-number">1</span> } };
+  db.collection(<span class="hljs-string">'tests'</span>).findOne(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, doc</span>) </span>{
+    assert.ifError(error);
+    assert.ok(doc);
+  });
+});</code></pre>
 
 
 <h2 id="it-throws-a-casterror-if-outside-allowed-range">It throws a CastError if outside allowed range</h2>
 <p>MongoDB int32&#39;s must be between -2147483648 and 2147483647. If the
 rounded value is outside of this range, that&#39;s a CastError.</p>
-<pre><code class="language-javascript">
-    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
-    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
-    doc.test = <span class="hljs-number">0x7FFFFFFF</span> + <span class="hljs-number">1</span>;
-    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
-      <span class="hljs-string">'Cast to Int32 failed for value "2147483648" at path "test"'</span>);
-</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
+<span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
+doc.test = <span class="hljs-number">0x7FFFFFFF</span> + <span class="hljs-number">1</span>;
+assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
+  <span class="hljs-string">'Cast to Int32 failed for value "2147483648" (type number) at path "test"'</span>);</code></pre>
 
 
 <h2 id="it-throws-a-casterror-if-not-a-number">It throws a CastError if not a number</h2>
 <p>If the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number"><code>Number</code> constructor</a>
 doesn&#39;t recognize the value as a valid number, that&#39;s a
 <a href="http://mongoosejs.com/docs/api.html#error-js">CastError</a>.</p>
-<pre><code class="language-javascript">
-    <span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
-    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
-    doc.test = <span class="hljs-string">'NaN'</span>;
-    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
-      <span class="hljs-string">'Cast to Int32 failed for value "NaN" at path "test"'</span>);
-</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> Test = mongoose.model(<span class="hljs-string">'Test'</span>);
+<span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Test();
+doc.test = <span class="hljs-string">'NaN'</span>;
+assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].name, <span class="hljs-string">'CastError'</span>);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'test'</span>].message,
+  <span class="hljs-string">'Cast to Int32 failed for value "NaN" (type string) at path "test"'</span>);</code></pre>
 
 
 <h2 id="it-works-with-required-validators">It works with required validators</h2>
-<pre><code class="language-javascript">
-    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
-      <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
-    });
-    <span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>, schema);
-    <span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Bacon();
-    assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].name, <span class="hljs-string">'ValidatorError'</span>);
-    assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].message,
-      <span class="hljs-string">'Path `strips` is required.'</span>);
-</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
+});
+<span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>, schema);
+<span class="hljs-keyword">const</span> doc = <span class="hljs-keyword">new</span> Bacon();
+assert.ok(doc.validateSync() <span class="hljs-keyword">instanceof</span> mongoose.Error);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].name, <span class="hljs-string">'ValidatorError'</span>);
+assert.equal(doc.validateSync().errors[<span class="hljs-string">'strips'</span>].message,
+  <span class="hljs-string">'Path `strips` is required.'</span>);</code></pre>
 
 
 <h2 id="it-works-with-queries">It works with queries</h2>
-<pre><code class="language-javascript">
-    <span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
-      <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
-    });
-    <span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>);
-    Bacon.create({ <span class="hljs-attr">strips</span>: <span class="hljs-number">4</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
-      assert.ifError(error);
-      Bacon.findOne({ <span class="hljs-attr">strips</span>: { <span class="hljs-attr">$gt</span>: <span class="hljs-number">2</span> } }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, bacon</span>) </span>{
-        assert.ifError(error);
-        assert.equal(bacon.strips, <span class="hljs-number">4</span>);
-      });
-    });
-</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  <span class="hljs-attr">strips</span>: { <span class="hljs-attr">type</span>: Int32, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }
+});
+<span class="hljs-keyword">const</span> Bacon = mongoose.model(<span class="hljs-string">'Bacon'</span>);
+Bacon.create({ <span class="hljs-attr">strips</span>: <span class="hljs-number">4</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+  assert.ifError(error);
+  Bacon.findOne({ <span class="hljs-attr">strips</span>: { <span class="hljs-attr">$gt</span>: <span class="hljs-number">2</span> } }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, bacon</span>) </span>{
+    assert.ifError(error);
+    assert.equal(bacon.strips, <span class="hljs-number">4</span>);
+  });
+});</code></pre>
 
 
       <h1 id="changelog">Changelog</h1>
+<h2 id="060--2022-01-05">0.6.0 / 2022-01-05</h2>
+<ul>
+<li>feat: add support for Mongoose 6 <a href="https://github.com/bvgusak">bvgusak</a></li>
+</ul>
+<h2 id="050--2021-05-14">0.5.0 / 2021-05-14</h2>
+<ul>
+<li>BREAKING CHANGE: export a <code>loadType</code> function that takes a Mongoose instance for compatibility with mongoose-float</li>
+</ul>
 <h2 id="041--2020-07-21">0.4.1 / 2020-07-21</h2>
 <ul>
 <li>fix: correctly format error messages for Mongoose 5.9 #8</li>
