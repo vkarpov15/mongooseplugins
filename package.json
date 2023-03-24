@@ -1,5 +1,5 @@
 {
-  "author": "Valeri Karpov <val@karpov.io",
+  "author": "Valeri Karpov <val@karpov.io>",
   "name": "plugins.mongoosejs.io",
   "description": "Mongoosejs plugins site",
   "version": "0.2.0",
